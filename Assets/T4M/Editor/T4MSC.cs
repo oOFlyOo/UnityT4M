@@ -9,7 +9,7 @@ using System.Text;
 using Substance.Game;
 
 public class T4MSC : EditorWindow {
-	
+
 	static public Transform CurrentSelect ;
 	public enum SM{
 		ShaderModel1,
@@ -21,28 +21,28 @@ public class T4MSC : EditorWindow {
 		Classic,
 		Follow_Normals
 	}
-	
+
 	GUIContent[] MenuIcon = new GUIContent[7];
-	
+
 	static public int T4MMenuToolbar = 0;
-	
-	enum EnumShaderGLES1{	
+
+	enum EnumShaderGLES1{
 		T4M_2_Textures_Auto_BeastLM_2DrawCall,
 		T4M_2_Textures_ManualAdd_BeastLM_1DC,
 		T4M_2_Textures_ManualAdd_CustoLM_1DC
 	}
-	
+
 	enum CreaType{
 		Classic_T4M,
-		Custom	
+		Custom
 	}
-	CreaType CreationBB = CreaType.Classic_T4M;	
-		
+	CreaType CreationBB = CreaType.Classic_T4M;
+
 	enum LODMod{
 		Mass_Control,
 		Independent_Control
 	}
-	
+
 	public enum ViewD{
 		Close,
 		Middle,
@@ -53,22 +53,22 @@ public class T4MSC : EditorWindow {
 		Y_Axis,
 		All_Axis
 	}
-	
+
 	 enum OccludeBy{
 		Max_View_Distance,
 		Layer_Cull_Distances
 	}
-	
-	
+
+
 	OccludeBy LODocclusion = OccludeBy.Layer_Cull_Distances;
 	OccludeBy BilBocclusion = OccludeBy.Layer_Cull_Distances;
-	
-	
+
+
 	BillbAxe BillBoardAxis = BillbAxe.Y_Axis;
-	
-	
+
+
 	static public ViewD[] ViewDistance= {ViewD.Middle, ViewD.Middle,ViewD.Middle,ViewD.Middle,ViewD.Middle,ViewD.Middle};
-	
+
 	enum EnumShaderGLES2{
 		T4M_2_Textures_Unlit_Lightmap_Compatible,
 		T4M_3_Textures_Unlit_Lightmap_Compatible,
@@ -104,7 +104,7 @@ public class T4MSC : EditorWindow {
 		T4M_2_Textures_Bumped_DirectionalLM,
 		T4M_3_Textures_Bumped_DirectionalLM
 	}
-	
+
 	enum EnumShaderGLES3{
 		T4M_2_Textures_Diffuse,
 		T4M_3_Textures_Diffuse,
@@ -121,14 +121,14 @@ public class T4MSC : EditorWindow {
 		T4M_3_Textures_Bumped_SPEC,
 		T4M_4_Textures_Bumped_SPEC
 	}
-	
+
 	enum LODShaderStatus{
 		New,
 		AlreadyExist
 	}
-	
+
 	string[] EnumMyT4M = {"T4M Settings", "ATS Mobile Foliage"};
-	
+
 	enum MaterialType{
 		Classic,
 		Substances
@@ -146,7 +146,7 @@ public class T4MSC : EditorWindow {
 	string[] BillMenu = {"Billboard Manager", "Billboard Creator"};
 	string PrefabName = "Name";
 	string CheckStatus;
-		
+
 	int tCount;
 	int counter;
     int totalCount;
@@ -174,12 +174,12 @@ public class T4MSC : EditorWindow {
 	int oldSelBrush;
 	int layerMask = 1 << 30;
 	int oldBrushSizeInPourcent;
-	int oldselTexture;	
+	int oldselTexture;
 	static public int T4MPlantSel =0;
 	static public float T4MObjSize=1;
-	 
+
 	T4MObjSC[] T4MObjCounter;
-	
+
 	Texture Layer1;
 	Texture Layer2;
 	Texture Layer3;
@@ -205,7 +205,7 @@ public class T4MSC : EditorWindow {
 	Mesh LOD1;
 	Mesh LOD2;
 	Mesh LOD3;
-	
+
 	bool ActivatedBillboard=true;
 	bool ActivatedLOD =true;
 	bool CheckLOD1Collider;
@@ -213,7 +213,7 @@ public class T4MSC : EditorWindow {
 	bool CheckLOD3Collider;
 	bool joinTiles = true;
 	bool intialized=false;
-	
+
 	Vector2 Layer1Tile;
 	Vector2 Layer2Tile;
 	Vector2 Layer3Tile;
@@ -221,30 +221,30 @@ public class T4MSC : EditorWindow {
 	Vector2 Layer5Tile;
 	Vector2 Layer6Tile;
 	Vector2 scrollPos;
-	
+
 	GameObject  Child;
 	GameObject UnityTerrain;
 	GameObject AddObject;
 	Transform PlayerCam;
     SubstanceGraph PreceduralAdd;
     SubstanceGraph Precedural;
-	
+
 	Shader LOD1S;
 	Shader LOD2S;
 	Shader LOD3S;
-	
+
 	Material LOD1Material;
 	Material LOD2Material;
 	Material LOD3Material;
 	TerrainData terrain;
-	
+
 	EnumShaderGLES2 MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_HighSpec;
 	EnumShaderGLES1 MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall;
 	EnumShaderGLES3 MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Diffuse;
 	SM ShaderModel = SM.ShaderModel2;
 	MaterialType MaterialTyp = MaterialType.Classic;
 	static public PlantMode T4MPlantMod = PlantMode.Classic;
-	
+
 	static public int T4MBrushSizeInPourcent;
 	static public Color T4MtargetColor;
 	static public Color T4MtargetColor2;
@@ -256,13 +256,13 @@ public class T4MSC : EditorWindow {
 	static int T4MSelectID;
 	static public int T4MselTexture =0;
 	static public Projector T4MProjectorPlt;
-	
+
 	string T4MEditorFolder = "Assets/T4M/Editor/";
 	string T4MFolder = "Assets/T4M/";
 	string T4MPrefabFolder = "Assets/T4MOBJ/";
 	string FinalExpName;
 	static public float T4MMaskTexUVCoord =1f;
-	
+
 	Shader CustomShader;
 	float shiness0;
 	float shiness1;
@@ -287,7 +287,7 @@ public class T4MSC : EditorWindow {
 	bool NewPref=false;
 	bool ActivatedLayerCul = true;
 	float CloseDistMaxView = 30f;
-	float NormalDistMaxView = 60f;	
+	float NormalDistMaxView = 60f;
 	float FarDistMaxView = 200f;
 	float BGDistMaxView = 10000f;
 	float BillboardDist = 30f;
@@ -307,18 +307,18 @@ public class T4MSC : EditorWindow {
 		Follow_Normal_Circle,
 		Follow_Normal_WireCircle,
 		Hide_preview
-	}	
+	}
 	static public PaintHandle PaintPrev = PaintHandle.Classic;
-	
+
 	int OptimizeLevel =0;
 	Vector4 UpSideTile = new Vector4(0.5f,0.5f,0.5f,0.5f);
 	float UpSideF = 2.5f;
 	float BlendFac = 4;
-	
+
 	Renderer[] NbrPartObj;
-	
-	
-	void OnDestroy() 
+
+
+	void OnDestroy()
 	{
 		T4MMenuToolbar = 0;
       	terrainDat = null;
@@ -337,20 +337,20 @@ public class T4MSC : EditorWindow {
 				}
 			}
     }
-	
+
 	[MenuItem ("Window/T4M Source Codes %t")]
-	static void Initialize () 
+	static void Initialize ()
 	{
 		T4MSC window = (T4MSC) EditorWindow.GetWindowWithRect(typeof (T4MSC),new Rect(0,0,386,700),false,"T4M SC");
 		window.Show();
 	}
-	
-	void OnInspectorUpdate() 
+
+	void OnInspectorUpdate()
 	{
         Repaint();
     }
-	
-	void OnGUI () 
+
+	void OnGUI ()
 	{
 		CurrentSelect= Selection.activeTransform;
 		nbrT4MObj = 0;
@@ -359,7 +359,7 @@ public class T4MSC : EditorWindow {
 			if (T4MObjCounter[i].Master ==1)
 				nbrT4MObj =+1;
 		}
-		
+
 		MenuIcon[0] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/conv.png", typeof(Texture2D))as Texture);
 		MenuIcon[1] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/optimize.png", typeof(Texture2D))as Texture);
 		MenuIcon[2] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/myt4m.png", typeof(Texture2D))as Texture);
@@ -367,7 +367,7 @@ public class T4MSC : EditorWindow {
 		MenuIcon[4] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/plant.png", typeof(Texture2D))as Texture);
 		MenuIcon[5] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/lod.png", typeof(Texture2D))as Texture);
 		MenuIcon[6] = new GUIContent(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Icons/bill.png", typeof(Texture2D))as Texture);
-		
+
 		if (CurrentSelect && Selection.activeInstanceID != T4MSelectID || UnityTerrain && T4MMenuToolbar != 0 || T4MMenuToolbar != 3 && T4MPreview){
 			IniNewSelect();
 		}
@@ -379,13 +379,13 @@ public class T4MSC : EditorWindow {
 		GUILayout.Label("T4M SC 久久没有更新，在Unity5各种问题。故修改此版，供公司美术使用，\n版权归原作者所有！此改版问题请反馈老沙：287490904@qq.com");
 		GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/logo.png", typeof(Texture))as Texture);
 		GUILayout.EndArea ();
-		
+
 		GUILayout.BeginArea (new Rect (25,51,363,700));
 		EditorGUILayout.Space();
 		GUILayout.BeginHorizontal("box");
 		T4MMenuToolbar = (int) GUILayout.Toolbar(T4MMenuToolbar, MenuIcon, "gridlist", GUILayout.Width(172), GUILayout.Height(18));
 		GUILayout.FlexibleSpace();
-				
+
 				GUILayout.Label("Controls",GUILayout.Width(52));
 				if(GUILayout.Button (T4MActived,GUILayout.Width(80))) {
 					if (T4MActived == "Activated"){
@@ -396,21 +396,21 @@ public class T4MSC : EditorWindow {
 			}
 			GUILayout.EndHorizontal();
 				GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/separator.png", typeof(Texture))as Texture);
-		
+
 				if(CurrentSelect != null && T4MActived =="Activated"){
 					if(CurrentSelect.GetComponent <T4MPartSC>()){
 						Selection.activeTransform = CurrentSelect.parent;
 					}
-					
+
 					Renderer[] rendererPart = CurrentSelect.GetComponentsInChildren<Renderer>();
-			
-					
+
+
 					if (CurrentSelect.GetComponent <T4MObjSC>() && (!CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial || !CurrentSelect.gameObject.GetComponent<T4MObjSC>().T4MMesh)){
-						
+
 						if (rendererPart.Length==0){
 							CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = CurrentSelect.GetComponent<Renderer>().sharedMaterial;
 							CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMesh = CurrentSelect.gameObject.GetComponent<MeshFilter>();
-					
+
 						}else {
 							for (int i=0;i<rendererPart.Length;i++){
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = rendererPart[0].sharedMaterial;
@@ -422,7 +422,7 @@ public class T4MSC : EditorWindow {
 							T4MMaster =false;
 						else if (nbrT4MObj ==1 && CurrentSelect.GetComponent <T4MObjSC>().Master == 1 && T4MMaster ==false && initMaster==false){
 							T4MMaster =true;
-							initMaster = true; 
+							initMaster = true;
 						}
 						if (rendererPart.Length==0){
 							if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial != CurrentSelect.GetComponent<Renderer>().sharedMaterial)
@@ -446,37 +446,37 @@ public class T4MSC : EditorWindow {
 							NbrPartObj = CurrentSelect.transform.GetComponentsInChildren<Renderer>();
 						}
 					}
-					
+
 					switch (T4MMenuToolbar)
 					{
 						case 0:
 						ConverterMenu();
 						break;
-						
+
 						case 1:
 						Optimize();
 						break;
-				
+
 						case 2:
 						MyT4M();
 						break;
-						
+
 						case 3:
 						PainterMenu();
 						break;
-						
+
 						case 4:
 						Planting ();
 						break;
-						
+
 						case 5:
-						afLOD();						
+						afLOD();
 						break;
-				
+
 						case 6:
 						BillboardMenu();
 						break;
-				
+
 					}
 					if (oldActivBillb != billActivate){
 							oldActivBillb = billActivate;
@@ -486,11 +486,11 @@ public class T4MSC : EditorWindow {
 					if(oldActivLOD != LodActivate){
 						oldActivLOD = LodActivate;
 						if (LodActivate ==false)
-							DeactivateLODByScript();	
+							DeactivateLODByScript();
 					}
 				}else{
-					
-						
+
+
 					if (CurrentSelect && CurrentSelect.GetComponent <T4MObjSC>() && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial){
 						Renderer[] rendererPart = CurrentSelect.GetComponentsInChildren<Renderer>();
 						if (rendererPart.Length==0){
@@ -501,7 +501,7 @@ public class T4MSC : EditorWindow {
 							}
 						}
 				}
-				
+
 					GUILayout.FlexibleSpace();
 					GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
@@ -509,14 +509,14 @@ public class T4MSC : EditorWindow {
 					GUILayout.FlexibleSpace();
 					GUILayout.EndHorizontal();
 					GUILayout.FlexibleSpace();
-				
+
 			}
 		GUILayout.EndArea ();
 		GUILayout.EndHorizontal();
-		
-		
+
+
 	}
-	
+
 	void Optimize(){
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 		{
@@ -561,16 +561,16 @@ public class T4MSC : EditorWindow {
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
-		
+
 				GUILayout.BeginHorizontal();
 				GUILayout.FlexibleSpace();
 				GUILayout.Label("Can Take Some Time", EditorStyles.boldLabel);
 				GUILayout.FlexibleSpace();
-				GUILayout.EndHorizontal();	
+				GUILayout.EndHorizontal();
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
-			
-		if (GUILayout.Button("Process", GUILayout.Width(100), GUILayout.Height(30))) 
+
+		if (GUILayout.Button("Process", GUILayout.Width(100), GUILayout.Height(30)))
 		{
 			string AssetName="";
 			int countchild = CurrentSelect.transform.childCount;
@@ -578,26 +578,26 @@ public class T4MSC : EditorWindow {
 				MeshFilter[] T4MOBJPART = CurrentSelect.GetComponentsInChildren<MeshFilter>();
 				AssetName= AssetDatabase.GetAssetPath(T4MOBJPART[0].sharedMesh) as string;
 				Debug.Log(AssetName);
-				
+
 			}else{
-				MeshFilter T4MOBJM = CurrentSelect.GetComponent<MeshFilter>();		
-				AssetName= AssetDatabase.GetAssetPath(T4MOBJM.sharedMesh) as string;	
+				MeshFilter T4MOBJM = CurrentSelect.GetComponent<MeshFilter>();
+				AssetName= AssetDatabase.GetAssetPath(T4MOBJM.sharedMesh) as string;
 			}
-			
+
 			ModelImporter OBJI= ModelImporter.GetAtPath (AssetName) as ModelImporter;
 			if (OptimizeLevel == 0){
 				OBJI.optimizeMesh = true;
 			}else if (OptimizeLevel == 1){
-				OBJI.optimizeMesh = true;	
+				OBJI.optimizeMesh = true;
 				OBJI.meshCompression = ModelImporterMeshCompression.Low;
 			}else if (OptimizeLevel == 2){
-				OBJI.optimizeMesh = true;	
-				OBJI.meshCompression = ModelImporterMeshCompression.Medium;	
+				OBJI.optimizeMesh = true;
+				OBJI.meshCompression = ModelImporterMeshCompression.Medium;
 			}else if (OptimizeLevel == 3){
-				OBJI.optimizeMesh = true;	
-				OBJI.meshCompression = ModelImporterMeshCompression.High;	
+				OBJI.optimizeMesh = true;
+				OBJI.meshCompression = ModelImporterMeshCompression.High;
 			}
-			AssetDatabase.ImportAsset(AssetName, ImportAssetOptions.ForceUpdate);	
+			AssetDatabase.ImportAsset(AssetName, ImportAssetOptions.ForceUpdate);
 			PrefabUtility.RevertPrefabInstance(CurrentSelect.gameObject);
 			AssetName="";
 		}
@@ -612,11 +612,11 @@ public class T4MSC : EditorWindow {
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 		}
-		
+
 	}
-	
-	
-	
+
+
+
 	void Repair(){
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
@@ -624,7 +624,7 @@ public class T4MSC : EditorWindow {
 		EditorGUILayout.Space();
 		GUILayout.Label("Clean It and Reconvert it ?");
 		GUILayout.FlexibleSpace();
-		if (GUILayout.Button("CLEANING", GUILayout.Width(100), GUILayout.Height(30))) 
+		if (GUILayout.Button("CLEANING", GUILayout.Width(100), GUILayout.Height(30)))
 		{
 			T4MObjSC ToSuppress = CurrentSelect.GetComponent <T4MObjSC>();
 			DestroyImmediate (ToSuppress);
@@ -632,16 +632,16 @@ public class T4MSC : EditorWindow {
 		}
 		GUILayout.FlexibleSpace();
 	}
-	
+
 	void BillboardMenu(){
-		
-		
+
+
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 			{
 			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){
-			
+
 			GUILayout.BeginHorizontal();
-					GUILayout.FlexibleSpace();	
+					GUILayout.FlexibleSpace();
 					BillM = GUILayout.Toolbar(BillM, BillMenu, GUILayout.Width(290), GUILayout.Height(20));
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
@@ -670,13 +670,13 @@ public class T4MSC : EditorWindow {
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 		}
-		
+
 	}
-	
+
 	void BillboardCreator(){
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
-		
+
 		GUILayout.BeginHorizontal("box");
 			GUILayout.Label("BillBoard Prefab Name", EditorStyles.boldLabel);
 				PrefabName=GUILayout.TextField (PrefabName, 25, GUILayout.Width(155));
@@ -684,7 +684,7 @@ public class T4MSC : EditorWindow {
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		CreationBB =(CreaType) EditorGUILayout.EnumPopup ("New Billboard Type", CreationBB, GUILayout.Width(340));
-		
+
 		if (CreationBB == CreaType.Custom){
 			GUILayout.Label("Billboard Meshes", EditorStyles.boldLabel);
 			BillMesh= (Mesh)EditorGUILayout.ObjectField("Mesh",  BillMesh, typeof(Mesh),false);
@@ -692,7 +692,7 @@ public class T4MSC : EditorWindow {
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		GUILayout.BeginHorizontal();
-		
+
 			GUILayout.Label("BillBoard Setup", EditorStyles.boldLabel, GUILayout.Width(223));
 			GUILayout.Label("MainTex", EditorStyles.boldLabel, GUILayout.Width(68));
 			GUILayout.Label("Bump", EditorStyles.boldLabel, GUILayout.Width(60));
@@ -711,7 +711,7 @@ public class T4MSC : EditorWindow {
 			GUILayout.EndVertical();
 				if (LOD1S)
 					LOD1Material =  new Material (Shader.Find (LOD1S.name));
-				
+
 					if (LOD1Material && LOD1Material.HasProperty("_MainTex")){
 						if (LOD1Material.GetTexture("_MainTex"))
 							LOD1T = LOD1Material.GetTexture("_MainTex");
@@ -721,8 +721,8 @@ public class T4MSC : EditorWindow {
 								LOD1B = LOD1Material.GetTexture("_BumpMap");
 							LOD1B=EditorGUILayout.ObjectField(LOD1B, typeof(Texture),false, GUILayout.Width(60), GUILayout.Height(60)) as Texture;
 						}
-					} 
-				
+					}
+
 				GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.FlexibleSpace();
@@ -736,23 +736,23 @@ public class T4MSC : EditorWindow {
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 				GUILayout.FlexibleSpace();
-		
+
 	}
 	void CreatePrefabBB(){
 			if (!System.IO.Directory.Exists(T4MPrefabFolder+"BillBObjects/"))
             {
                 System.IO.Directory.CreateDirectory(T4MPrefabFolder+"BillBObjects/");
-            } 
+            }
 			 if (!System.IO.Directory.Exists(T4MPrefabFolder+"BillBObjects/Material/"))
             {
                 System.IO.Directory.CreateDirectory(T4MPrefabFolder+"BillBObjects/Material/");
-            } 
-			AssetDatabase.Refresh(); 	 
+            }
+			AssetDatabase.Refresh();
 			GameObject LOD1Temp;
 			LOD1Temp = new GameObject (PrefabName);
 			LOD1Temp.AddComponent<MeshFilter> ();
 			LOD1Temp.AddComponent<MeshRenderer> ();
-			
+
 			if (CreationBB == CreaType.Custom){
 				LOD1Temp.GetComponent<MeshFilter>().mesh = BillMesh;
 			}else{
@@ -765,19 +765,19 @@ public class T4MSC : EditorWindow {
 			LOD1Temp.GetComponent<Renderer>().sharedMaterial.SetTexture ("_MainTex", LOD1T);
 			LOD1Temp.GetComponent <T4MBillBObjSC>().Render = LOD1Temp.GetComponent<Renderer>();
 			LOD1Temp.GetComponent <T4MBillBObjSC>().Transf = LOD1Temp.transform;
-		
+
 			bool ExportSuccess = false;
 			int num =1;
 			UnityEngine.Object BasePrefab;
 			string Next;
-			do { 
+			do {
 				Next=PrefabName+num;
-				
+
 				if (!System.IO.File.Exists(T4MPrefabFolder+"BillBObjects/"+PrefabName+".prefab"))
 				{
 					if (ShaderLOD1S == LODShaderStatus.New)
 						 AssetDatabase.CreateAsset(LOD1Material, T4MPrefabFolder+"BillBObjects/Material/"+PrefabName+".mat");
-					
+
 					BasePrefab = PrefabUtility.CreateEmptyPrefab(T4MPrefabFolder+"BillBObjects/"+PrefabName+".prefab");
 					PrefabUtility.ReplacePrefab(LOD1Temp, BasePrefab);
 					ExportSuccess = true;
@@ -794,28 +794,28 @@ public class T4MSC : EditorWindow {
 			}while (!ExportSuccess);
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
-				
-		
+
+
 			DestroyImmediate(LOD1Temp);
 			EditorUtility.DisplayDialog("T4M Message", "Construction Completed", "OK");
 	}
-	
+
 	void Billboard(){
-		
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
 			GUILayout.Label("Culling BillBoard Mode", EditorStyles.boldLabel);
 			BilBocclusion = (OccludeBy) EditorGUILayout.EnumPopup ("Mode", BilBocclusion, GUILayout.Width(340));
-			
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-		
-		
+
+
 			GUILayout.Label("BillBoard Rotation Axis", EditorStyles.boldLabel);
 			BillBoardAxis =(BillbAxe) EditorGUILayout.EnumPopup ("Axis", BillBoardAxis, GUILayout.Width(340));
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			GUILayout.Label("BillBoard Update Interval in Seconde", EditorStyles.boldLabel, GUILayout.Width(400));
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("(less value = less performance)", GUILayout.Width(300));
@@ -835,19 +835,19 @@ public class T4MSC : EditorWindow {
 			GUILayout.FlexibleSpace();
 			GUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
-		
+
 			Texture Swap;
 			string buttonBill;
 			if (billActivate == true){
-				buttonBill = "DEACTIVATE";	
-				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/on.png", typeof(Texture));	
-			}else{ 
+				buttonBill = "DEACTIVATE";
+				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/on.png", typeof(Texture));
+			}else{
 				buttonBill = "ACTIVATE";
 				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/off.png", typeof(Texture));
 			}
-	
-			
-			if (GUILayout.Button(buttonBill, GUILayout.Width(100), GUILayout.Height(30))) 
+
+
+			if (GUILayout.Button(buttonBill, GUILayout.Width(100), GUILayout.Height(30)))
 					{
 						ActivateDeactivateBillBoard();
 					}
@@ -855,33 +855,33 @@ public class T4MSC : EditorWindow {
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
 			GUILayout.FlexibleSpace();
-	
+
 	}
-	
+
 	void DeactivateBillBByScript(){
 		T4MBillBObjSC[] T4MBillObjGet =  GameObject.FindObjectsOfType(typeof(T4MBillBObjSC)) as T4MBillBObjSC[];
-						
+
 		for(var i=0;i<T4MBillObjGet.Length;i++){
 			T4MBillObjGet[i].Render.enabled = true;
 		T4MBillObjGet[i].Transf.LookAt(Vector3.zero , Vector3.up);
-		}	
-		
+		}
+
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition= new Vector3[0];
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillStatus=new int[0];
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillScript= new T4MBillBObjSC[0];
 		PrefabUtility.RecordPrefabInstancePropertyModifications(CurrentSelect.gameObject.GetComponent<T4MObjSC>());
 		Debug.LogWarning ("The Number of Activated Billboard Objects has changed, reactivate the billboards in the 'Billboard' Tab.");
 	}
-	
+
 	void ActivateDeactivateBillBoard(){
 			if (billActivate == true){ //si le billboard est actif
 					T4MBillBObjSC[] T4MBillObjGet =  GameObject.FindObjectsOfType(typeof(T4MBillBObjSC)) as T4MBillBObjSC[];
-									
+
 					for(var i=0;i<T4MBillObjGet.Length;i++){
 						T4MBillObjGet[i].Render.enabled = true;
 					T4MBillObjGet[i].Transf.LookAt(Vector3.zero , Vector3.up);
-					}	
-					
+					}
+
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition= new Vector3[0];
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillStatus=new int[0];
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillScript= new T4MBillBObjSC[0];
@@ -891,19 +891,19 @@ public class T4MSC : EditorWindow {
 			}else{
 					if (!PlayerCam)
 						PlayerCam=Camera.main.transform;
-			
+
 					T4MBillBObjSC[] T4MBillObjGet =  GameObject.FindObjectsOfType(typeof(T4MBillBObjSC)) as T4MBillBObjSC[];
-					Vector3[] T4MBillVectGetR = new Vector3[T4MBillObjGet.Length]; 
-					int[] T4MBillValueGetR = new int[T4MBillObjGet.Length]; 
-					
+					Vector3[] T4MBillVectGetR = new Vector3[T4MBillObjGet.Length];
+					int[] T4MBillValueGetR = new int[T4MBillObjGet.Length];
+
 						for (var j =0; j <T4MBillObjGet.Length;j++){
 							T4MBillVectGetR[j]=T4MBillObjGet[j].transform.position;
 							if(Vector3.Distance(T4MBillObjGet[j].transform.position, PlayerCam.transform.position) <= BillboardDist){
 								T4MBillObjGet[j].Render.enabled = true;
 								T4MBillValueGetR[j] = 1;
-					
+
 							}else {
-								if (BilBocclusion == OccludeBy.Max_View_Distance){								
+								if (BilBocclusion == OccludeBy.Max_View_Distance){
 									T4MBillObjGet[j].Render.enabled = false;
 									T4MBillValueGetR[j] = 0;
 								}else{
@@ -912,15 +912,15 @@ public class T4MSC : EditorWindow {
 								}
 							}
 							if (BillBoardAxis == BillbAxe.Y_Axis)
-								T4MBillObjGet[j].Transf.LookAt(new Vector3 (PlayerCam.transform.position.x,T4MBillObjGet[j].Transf.position.y,PlayerCam.transform.position.z) , Vector3.up);	
-							else	
+								T4MBillObjGet[j].Transf.LookAt(new Vector3 (PlayerCam.transform.position.x,T4MBillObjGet[j].Transf.position.y,PlayerCam.transform.position.z) , Vector3.up);
+							else
 								T4MBillObjGet[j].Transf.LookAt(PlayerCam.transform.position, Vector3.up);
-							
+
 						}
 					if (BilBocclusion == OccludeBy.Max_View_Distance)
 						CurrentSelect.GetComponent <T4MObjSC>().BilBbasedOnScript= true;
 					else CurrentSelect.GetComponent <T4MObjSC>().BilBbasedOnScript= false;
-		
+
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition= T4MBillVectGetR;
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillStatus = T4MBillValueGetR;
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillScript= T4MBillObjGet;
@@ -930,19 +930,19 @@ public class T4MSC : EditorWindow {
 						CurrentSelect.gameObject.GetComponent <T4MObjSC>().Axis= 0;
 					else CurrentSelect.gameObject.GetComponent <T4MObjSC>().Axis= 1;
 					PrefabUtility.RecordPrefabInstancePropertyModifications(CurrentSelect.gameObject.GetComponent<T4MObjSC>());
-					
+
 					billActivate = true;
 					Debug.LogWarning ("Billboard (re)activated !");
-			}	
+			}
 	}
-	
+
 	void Planting (){
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 			{
-			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){	
+			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){
 		if(T4MRandomRot && T4MPlantMod == PlantMode.Follow_Normals)
 			T4MRandomRot=false;
-		
+
 		GUILayout.BeginVertical("box");
 		GUILayout.BeginHorizontal();
 			GUILayout.Label("Add to List", GUILayout.Width(105));
@@ -950,17 +950,17 @@ public class T4MSC : EditorWindow {
 			AddObject = (GameObject)EditorGUILayout.ObjectField("",AddObject, typeof(GameObject),true,GUILayout.Width(190));
 		GUILayout.EndHorizontal();
 		EditorGUILayout.BeginHorizontal();
-		
+
 		GUILayout.Label("",GUILayout.Width(1));
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
-			if (AddObject)	
+			if (AddObject)
 				T4MObjectPlant[0] = AddObject;
 			else {
 				T4MObjectPlant[0] = null;
 			}
 			AddObject = null;
 		}
-		
+
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
 			if (AddObject)
 				T4MObjectPlant[1] = AddObject;
@@ -969,7 +969,7 @@ public class T4MSC : EditorWindow {
 			}
 			AddObject = null;
 		}
-		
+
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
 			if (AddObject)
 				T4MObjectPlant[2] = AddObject;
@@ -978,7 +978,7 @@ public class T4MSC : EditorWindow {
 			}
 			AddObject = null;
 		}
-	
+
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
 			if (AddObject)
 				T4MObjectPlant[3] = AddObject;
@@ -987,7 +987,7 @@ public class T4MSC : EditorWindow {
 			}
 			AddObject = null;
 		}
-	
+
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
 			if (AddObject)
 				T4MObjectPlant[4] = AddObject;
@@ -996,7 +996,7 @@ public class T4MSC : EditorWindow {
 			}
 			AddObject = null;
 		}
-	
+
 		if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/down.png", typeof(Texture)),GUILayout.Width(53))) {
 			if (AddObject)
 				T4MObjectPlant[5] = AddObject;
@@ -1005,20 +1005,20 @@ public class T4MSC : EditorWindow {
 			}
 			AddObject = null;
 		}
-				
+
 		EditorGUILayout.EndHorizontal();
-		
+
 		GUILayout.EndVertical();
 		if(T4MObjectPlant[0] != null)
 			TexObject[0]=AssetPreview.GetAssetPreview(T4MObjectPlant[0])as Texture;
 		else TexObject[0]=null;
-		if(T4MObjectPlant[1] != null)	
+		if(T4MObjectPlant[1] != null)
 			TexObject[1]=AssetPreview.GetAssetPreview(T4MObjectPlant[1])as Texture;
 		else TexObject[1]=null;
 		if(T4MObjectPlant[2] != null)
 			TexObject[2]=AssetPreview.GetAssetPreview(T4MObjectPlant[2])as Texture;
 		else TexObject[2]=null;
-		if(T4MObjectPlant[3] != null)	
+		if(T4MObjectPlant[3] != null)
 			TexObject[3]=AssetPreview.GetAssetPreview(T4MObjectPlant[3])as Texture;
 		else TexObject[3]=null;
 		if(T4MObjectPlant[4] != null)
@@ -1027,46 +1027,46 @@ public class T4MSC : EditorWindow {
 		if(T4MObjectPlant[5] != null)
 			TexObject[5]=AssetPreview.GetAssetPreview(T4MObjectPlant[5])as Texture;
 		else TexObject[5]=null;
-		 
+
 		GUILayout.BeginHorizontal("box");
 			GUILayout.FlexibleSpace();
 				T4MPlantSel = GUILayout.SelectionGrid (T4MPlantSel, TexObject, 6 ,"gridlist",GUILayout.Width(340), GUILayout.Height(58));
 			GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
-			
-		//LayerMask	
-		GUILayout.BeginVertical("box");	
+
+		//LayerMask
+		GUILayout.BeginVertical("box");
 			GUILayout.BeginHorizontal();
 				GUILayout.Label("",GUILayout.Width(22));
 				T4MselectObj = 0;
 				for (int i=0;i<T4MBoolObj.Length;i++){
-					if (T4MObjectPlant[i]){	
+					if (T4MObjectPlant[i]){
 						T4MBoolObj[i] = EditorGUILayout.Toggle(T4MBoolObj[i],GUILayout.Width(53));
 						if (T4MBoolObj[i] == true)
 							T4MselectObj +=1;
 					}else GUILayout.Label("",GUILayout.Width(53));
-				} 
+				}
 			GUILayout.EndHorizontal();
-				
-			GUILayout.BeginHorizontal();	
+
+			GUILayout.BeginHorizontal();
 				GUILayout.Label("",GUILayout.Width(2));
 				for (int j=0;j<T4MObjectPlant.Length;j++){
-					if (T4MObjectPlant[j]){	
+					if (T4MObjectPlant[j]){
 						ViewDistance[j] =(ViewD) EditorGUILayout.EnumPopup (ViewDistance[j], GUILayout.Width(53));
 					}else GUILayout.Label("",GUILayout.Width(53));
 				}
-			GUILayout.EndHorizontal();	 
+			GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
-			
-			
+
+
 		T4MPlantMod =(PlantMode) EditorGUILayout.EnumPopup ("Plant Mode", T4MPlantMod, GUILayout.Width(340));
-		
+
 		GUILayout.BeginVertical("box");
 		GUILayout.Label("General", EditorStyles.boldLabel);
 		EditorGUILayout.Space();
-		T4MObjSize = EditorGUILayout.Slider("LocalSize",T4MObjSize,0.1f,4);	
+		T4MObjSize = EditorGUILayout.Slider("LocalSize",T4MObjSize,0.1f,4);
 		T4MSizeVar = EditorGUILayout.Slider("Size Var.(Random +/-)",T4MSizeVar,0,0.5f);
-			
+
 		T4MYOrigin = EditorGUILayout.Slider("Y Origin Corrector ",T4MYOrigin,-10,10);
 		EditorGUILayout.Space();
 		GUILayout.BeginHorizontal();
@@ -1095,22 +1095,22 @@ public class T4MSC : EditorWindow {
 			if(T4MRandomSpa)
 			T4MDistanceMax = EditorGUILayout.Slider("Random Instance Zone",T4MDistanceMax,0.1f,50.0f);
 		GUILayout.EndVertical();
-		
+
 		if (T4MDistanceMin > T4MDistanceMax)
 			T4MDistanceMax= T4MDistanceMin;
 		EditorGUILayout.Space();
-		
+
 		GUILayout.BeginVertical("box");
 			GUILayout.BeginHorizontal();
 				GUILayout.Label("Random Rotation(s)", EditorStyles.boldLabel, GUILayout.Width(150));
-		
+
 				T4MRandomRot = EditorGUILayout.Toggle(T4MRandomRot, GUILayout.Width(15));
 			GUILayout.EndHorizontal();
 			EditorGUILayout.Space();
 			if(T4MRandomRot){
 				T4MrandX = EditorGUILayout.Slider("Random X:",T4MrandX,0,1);
 				T4MrandY = EditorGUILayout.Slider("Random Y:",T4MrandY,0,1);
-				T4MrandZ = EditorGUILayout.Slider("Random Z:",T4MrandZ,0,1);			
+				T4MrandZ = EditorGUILayout.Slider("Random Z:",T4MrandZ,0,1);
 			}
 		GUILayout.EndVertical();
 		}
@@ -1121,22 +1121,22 @@ public class T4MSC : EditorWindow {
 					GUILayout.Label("Please, select the T4M Object", EditorStyles.boldLabel);
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
-			
+
 		}
-		
+
 	}
-	
+
 
 	void PixelPainterMenu()
 	{
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 			{
-			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){	
+			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){
 				IniBrush();
 				InitPincil();
 			if (!T4MPreview)
 				InitPreview();
-			if (intialized){	
+			if (intialized){
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 						GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/brushes.jpg", typeof(Texture)) as Texture,"label");
@@ -1147,7 +1147,7 @@ public class T4MSC : EditorWindow {
 						GUILayout.EndHorizontal();
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
+
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 						GUILayout.BeginHorizontal("box", GUILayout.Width(340));
@@ -1160,10 +1160,10 @@ public class T4MSC : EditorWindow {
 						GUILayout.EndHorizontal();
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
+
 				 EditorGUILayout.Space();
-				 
-					
+
+
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 					GUILayout.BeginVertical("box", GUILayout.Width(347));
@@ -1176,8 +1176,8 @@ public class T4MSC : EditorWindow {
 					GUILayout.EndVertical();
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
-				
+
+
 				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_SpecColor")){
 					EditorGUILayout.Space();
 						GUILayout.BeginHorizontal();
@@ -1202,29 +1202,29 @@ public class T4MSC : EditorWindow {
 								 shiness3 = EditorGUILayout.Slider("Shininess Layer 4",shiness3,0.00f,1.0f);
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetFloat ("_ShininessL3",shiness3);
 							}
-					
+
 						GUILayout.EndVertical();
 						GUILayout.FlexibleSpace();
 					GUILayout.EndHorizontal();
-					
+
 				}
 				EditorGUILayout.Space();
-				
-				
-							
-							
+
+
+
+
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 					if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_SpecColor")){
 						scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width (350), GUILayout.Height (140));
-						GUILayout.BeginVertical("box", GUILayout.Width(320));	
+						GUILayout.BeginVertical("box", GUILayout.Width(320));
 					}else {
 						GUILayout.BeginVertical("box", GUILayout.Width(320));
 						if (TexTexture.Length >4)
 							scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width (340), GUILayout.Height (275));
 						else scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width (340), GUILayout.Height (240));
 					}
-					
+
 					joinTiles = EditorGUILayout.Toggle ("Tiling : Join X/Y", joinTiles);
 					EditorGUILayout.Space();
 					if (joinTiles){
@@ -1296,7 +1296,7 @@ public class T4MSC : EditorWindow {
 				GUILayout.EndVertical();
 				GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
+
 				if (TexBrush.Length>0){
 					T4MPreview.material.SetTexture("_MaskTex", TexBrush[selBrush]);
 					MeshFilter temp = CurrentSelect.GetComponent<MeshFilter>();
@@ -1305,14 +1305,14 @@ public class T4MSC : EditorWindow {
 						T4MPreview.orthographicSize = (brushSize* CurrentSelect.localScale.x)*(temp.sharedMesh.bounds.size.x/200);
 						T4MPreview.orthographic =true;
 				}
-					
+
 					float test = T4MStronger*200/100;
 					T4MPreview.material.SetFloat ("_Transp", Mathf.Clamp(test,0.4f,1));
-				
+
 				T4MBrushSizeInPourcent = (int)Mathf.Round ((brushSize*T4MMaskTex.width)/100);
-				
-				 
-					
+
+
+
 				if (T4MselTexture == 0)
 					{
 						T4MPreview.material.SetTextureScale ("_MainTex", Layer1Tile);
@@ -1323,7 +1323,7 @@ public class T4MSC : EditorWindow {
 						T4MPreview.material.SetTextureScale ("_MainTex", Layer2Tile);
 						T4MPreview.material.SetVector("_Tiling",0.1f*new Vector4(Layer2Tile.x,Layer2Tile.y,0,0));
 					}
-				else if (T4MselTexture == 2)	
+				else if (T4MselTexture == 2)
 					{
 						T4MPreview.material.SetTextureScale ("_MainTex", Layer3Tile);
 						T4MPreview.material.SetVector("_Tiling",0.1f*new Vector4(Layer3Tile.x,Layer3Tile.y,0,0));
@@ -1354,7 +1354,7 @@ public class T4MSC : EditorWindow {
 					}
 					else if (T4MselTexture == 1){
 						T4MPreview.material.SetTexture("_MainTex", CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat1") as Texture);
-						if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall") || 
+						if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall") ||
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")||
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC"))
 							T4MtargetColor = new Color(0, 0, 0, 1);
@@ -1362,7 +1362,7 @@ public class T4MSC : EditorWindow {
 						T4MtargetColor = new Color(0, 1, 0, 0);
 						if (T4MMaskTex2)
 							T4MtargetColor2 = new Color(0, 0, 0, 0);
-						}							
+						}
 					}
 					else if (T4MselTexture == 2){
 						T4MPreview.material.SetTexture("_MainTex", CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat2") as Texture);
@@ -1407,13 +1407,13 @@ public class T4MSC : EditorWindow {
 					GUILayout.Label("Please, select the T4M Object", EditorStyles.boldLabel);
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
-			
-		}
-		
-	}
-	
 
-	
+		}
+
+	}
+
+
+
 	void InitPreview()
 	{
 		var ProjectorB = new GameObject ("PreviewT4M");
@@ -1466,7 +1466,7 @@ public class T4MSC : EditorWindow {
 			T4MPreview.material.SetTexture("_MainTex", CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat5") as Texture);
 		}
 	}
-	
+
 	static public void SaveTexture()
 	{
 		var path = AssetDatabase.GetAssetPath (T4MMaskTex);
@@ -1479,10 +1479,10 @@ public class T4MSC : EditorWindow {
 		}
 		//AssetDatabase.Refresh ();
 	}
-	
+
 	void InitPincil()
 	{
-		
+
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat5")){
 			TexTexture = new Texture[6];
 			TexTexture[0]=AssetPreview.GetAssetPreview(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat0"))as Texture;
@@ -1513,10 +1513,10 @@ public class T4MSC : EditorWindow {
 			TexTexture = new Texture[2];
 			TexTexture[0]=AssetPreview.GetAssetPreview(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat0"))as Texture;
 			TexTexture[1]=AssetPreview.GetAssetPreview(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat1"))as Texture;
-			
+
 		}
 	}
-	
+
 	void IniBrush()
 	{
 		ArrayList BrushList = new ArrayList ();
@@ -1531,14 +1531,14 @@ public class T4MSC : EditorWindow {
 		}while (BrushesTL);
 		TexBrush = BrushList.ToArray(typeof(Texture)) as Texture[];
 	}
-	
+
 	void afLOD()
 	{
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 			{
-			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){	
+			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){
 			GUILayout.BeginHorizontal();
-					GUILayout.FlexibleSpace();	
+					GUILayout.FlexibleSpace();
 					LODM = GUILayout.Toolbar(LODM, LODMenu, GUILayout.Width(290), GUILayout.Height(20));
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
@@ -1561,51 +1561,51 @@ public class T4MSC : EditorWindow {
 			GUILayout.EndHorizontal();
 		}
 	}
-	
+
 	void LODObjectC()
 	{
-		
-		
+
+
 		EditorGUILayout.Space();
-	
+
 		GUILayout.BeginHorizontal("box");
 			GUILayout.Label("LOD Prefab Name", EditorStyles.boldLabel);
 				PrefabName=GUILayout.TextField (PrefabName, 25, GUILayout.Width(155));
 		GUILayout.EndHorizontal();
-		
+
 		EditorGUILayout.Space();
-		
+
 		GUILayout.Label("LOD Meshes", EditorStyles.boldLabel);
 		LOD1= (Mesh)EditorGUILayout.ObjectField("LOD1 : Close",  LOD1, typeof(Mesh),false);
 		LOD2= (Mesh)EditorGUILayout.ObjectField("LOD2 : Medium",LOD2, typeof(Mesh),false);
 		LOD3= (Mesh)EditorGUILayout.ObjectField("LOD3 : Far",LOD3, typeof(Mesh),false);
-		
+
 		EditorGUILayout.Space();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.Label("LOD1 Setup", EditorStyles.boldLabel, GUILayout.Width(223));
 			GUILayout.Label("MainTex", EditorStyles.boldLabel, GUILayout.Width(68));
 			GUILayout.Label("Bump", EditorStyles.boldLabel, GUILayout.Width(60));
 		GUILayout.EndHorizontal();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
 					GUILayout.Label("Place the MeshCollider on this LOD", GUILayout.Width(205));
 					CheckLOD1Collider = EditorGUILayout.Toggle(CheckLOD1Collider, GUILayout.Width(15));
 				GUILayout.EndHorizontal();
-		
+
 			GUILayout.BeginHorizontal();
 				GUILayout.Label("LOD1 Shader", GUILayout.Width(103));
 				ShaderLOD1S =(LODShaderStatus) EditorGUILayout.EnumPopup (ShaderLOD1S, GUILayout.Width(95));
-			GUILayout.EndHorizontal();	
+			GUILayout.EndHorizontal();
 				if (ShaderLOD1S == LODShaderStatus.New)
 					LOD1S= (Shader)EditorGUILayout.ObjectField(LOD1S, typeof(Shader),true, GUILayout.MaxWidth(220));
 				else LOD1Material= (Material)EditorGUILayout.ObjectField(LOD1Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD1S)
 					LOD1Material =  new Material (Shader.Find (LOD1S.name));
-				
+
 					if (LOD1Material && LOD1Material.HasProperty("_MainTex")){
 						if (LOD1Material.GetTexture("_MainTex"))
 							LOD1T = LOD1Material.GetTexture("_MainTex");
@@ -1616,35 +1616,35 @@ public class T4MSC : EditorWindow {
 							LOD1B=EditorGUILayout.ObjectField(LOD1B, typeof(Texture),false, GUILayout.Width(60), GUILayout.Height(60)) as Texture;
 						}
 					}
-				
+
 				GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
-		
+
 		EditorGUILayout.Space();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.Label("LOD2 Setup", EditorStyles.boldLabel, GUILayout.Width(223));
 			GUILayout.Label("MainTex", EditorStyles.boldLabel, GUILayout.Width(68));
 			GUILayout.Label("Bump", EditorStyles.boldLabel, GUILayout.Width(60));
 		GUILayout.EndHorizontal();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
 					GUILayout.Label("Place the MeshCollider on this LOD", GUILayout.Width(205));
 					CheckLOD2Collider = EditorGUILayout.Toggle(CheckLOD2Collider, GUILayout.Width(15));
 				GUILayout.EndHorizontal();
-		
+
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("LOD2 Shader", GUILayout.Width(103));
 				ShaderLOD2S =(LODShaderStatus) EditorGUILayout.EnumPopup (ShaderLOD2S, GUILayout.Width(95));
-				GUILayout.EndHorizontal();	
+				GUILayout.EndHorizontal();
 			if (ShaderLOD2S == LODShaderStatus.New)
 				LOD2S= (Shader)EditorGUILayout.ObjectField(LOD2S, typeof(Shader),false, GUILayout.MaxWidth(220));
 			else LOD2Material= (Material)EditorGUILayout.ObjectField(LOD2Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD2S)
-					LOD2Material =  new Material (Shader.Find (LOD2S.name)); 
+					LOD2Material =  new Material (Shader.Find (LOD2S.name));
 					if (LOD2Material && LOD2Material.HasProperty("_MainTex")){
 						if (LOD2Material.GetTexture("_MainTex"))
 							LOD2T = LOD2Material.GetTexture("_MainTex");
@@ -1655,25 +1655,25 @@ public class T4MSC : EditorWindow {
 							LOD2B=EditorGUILayout.ObjectField(LOD2B, typeof(Texture),false, GUILayout.Width(60), GUILayout.Height(60)) as Texture;
 						}
 					}
-				
+
 				GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
-		
+
 		EditorGUILayout.Space();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.Label("LOD3 Setup", EditorStyles.boldLabel, GUILayout.Width(223));
 			GUILayout.Label("MainTex", EditorStyles.boldLabel, GUILayout.Width(68));
 			GUILayout.Label("Bump", EditorStyles.boldLabel, GUILayout.Width(60));
 		GUILayout.EndHorizontal();
-		
+
 		GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
 				GUILayout.BeginHorizontal();
 					GUILayout.Label("Place the MeshCollider on this LOD", GUILayout.Width(205));
 				CheckLOD3Collider = EditorGUILayout.Toggle(CheckLOD3Collider, GUILayout.Width(15));
 				GUILayout.EndHorizontal();
-		
+
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("LOD3 Shader", GUILayout.Width(103));
 				ShaderLOD3S =(LODShaderStatus) EditorGUILayout.EnumPopup (ShaderLOD3S, GUILayout.Width(95));
@@ -1683,7 +1683,7 @@ public class T4MSC : EditorWindow {
 			else LOD3Material= (Material)EditorGUILayout.ObjectField(LOD3Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD3S)
-					LOD3Material =  new Material (Shader.Find (LOD3S.name)); 
+					LOD3Material =  new Material (Shader.Find (LOD3S.name));
 					if (LOD3Material && LOD3Material.HasProperty("_MainTex")){
 						if (LOD3Material.GetTexture("_MainTex"))
 							LOD3T = LOD3Material.GetTexture("_MainTex");
@@ -1694,7 +1694,7 @@ public class T4MSC : EditorWindow {
 							LOD3B=EditorGUILayout.ObjectField(LOD3B, typeof(Texture),false, GUILayout.Width(60), GUILayout.Height(60)) as Texture;
 						}
 					}
-				
+
 				GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.FlexibleSpace();
@@ -1708,7 +1708,7 @@ public class T4MSC : EditorWindow {
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 		GUILayout.FlexibleSpace();
-		
+
 		if (CheckLOD1Collider == true && CheckStatus !="LOD1"){
 			CheckStatus ="LOD1";
 			CheckLOD2Collider = false;
@@ -1748,19 +1748,19 @@ public class T4MSC : EditorWindow {
 			OldShaderLOD3S = ShaderLOD3S;
 		}
 	}
-	
+
 	void CreatePrefab()
 	{
 			if (!System.IO.Directory.Exists(T4MPrefabFolder+"LODObjects/"))
             {
                 System.IO.Directory.CreateDirectory(T4MPrefabFolder+"LODObjects/");
-            } 
+            }
 			 if (!System.IO.Directory.Exists(T4MPrefabFolder+"LODObjects/Material/"))
             {
                 System.IO.Directory.CreateDirectory(T4MPrefabFolder+"LODObjects/Material/");
-            } 
-			AssetDatabase.Refresh(); 	 
-			
+            }
+			AssetDatabase.Refresh();
+
 			GameObject LOD1Temp;
 			LOD1Temp = new GameObject (PrefabName+"LOD1");
 			LOD1Temp.AddComponent<MeshFilter> ();
@@ -1774,7 +1774,7 @@ public class T4MSC : EditorWindow {
 				LOD1Temp.AddComponent <MeshCollider>();
 				LOD1Temp.GetComponent<MeshCollider>().sharedMesh = LOD1;
 			}
-						
+
 			GameObject LOD2Temp;
 			LOD2Temp = new GameObject (PrefabName+"LOD2");
 			LOD2Temp.AddComponent<MeshFilter>();
@@ -1784,12 +1784,12 @@ public class T4MSC : EditorWindow {
 			LOD2Temp.GetComponent<Renderer>().sharedMaterial.SetTexture ("_MainTex", LOD2T);
 			LOD1Temp.GetComponent<T4MLodObjSC>().LOD2= LOD2Temp.GetComponent<Renderer>();
 			LOD2Temp.GetComponent<MeshRenderer>().enabled= false;
-			LOD2Temp.transform.parent = LOD1Temp.transform; 
+			LOD2Temp.transform.parent = LOD1Temp.transform;
 			if (CheckLOD2Collider){
 				LOD2Temp.AddComponent<MeshCollider> ();
 				LOD2Temp.GetComponent<MeshCollider>().sharedMesh = LOD2;
 			}
-						
+
 			GameObject LOD3Temp;
 			LOD3Temp = new GameObject (PrefabName+"LOD3");
 			LOD3Temp.AddComponent <MeshFilter>();
@@ -1799,26 +1799,26 @@ public class T4MSC : EditorWindow {
 			LOD3Temp.GetComponent<Renderer>().sharedMaterial.SetTexture ("_MainTex", LOD3T);
 			LOD1Temp.GetComponent <T4MLodObjSC>().LOD3= LOD3Temp.GetComponent<Renderer>();
 			LOD3Temp.GetComponent <MeshRenderer>().enabled= false;
-			LOD3Temp.transform.parent = LOD1Temp.transform; 
+			LOD3Temp.transform.parent = LOD1Temp.transform;
 			if (CheckLOD3Collider){
 				LOD3Temp.AddComponent <MeshCollider>();
 				LOD3Temp.GetComponent<MeshCollider>().sharedMesh = LOD3;
 			}
-			
+
 			bool ExportSuccess = false;
 			int num =1;
 			UnityEngine.Object BasePrefab;
 			string Next;
-			do { 
+			do {
 				Next=PrefabName+num;
-				
+
 				if (!System.IO.File.Exists(T4MPrefabFolder+"LODObjects/"+PrefabName+"_LOD.prefab"))
 				{
-					
+
 					if (ShaderLOD1S == LODShaderStatus.New)
 						 AssetDatabase.CreateAsset(LOD1Material, T4MPrefabFolder+"LODObjects/Material/"+PrefabName+"LOD1.mat");
 					if (ShaderLOD2S == LODShaderStatus.New)
-						AssetDatabase.CreateAsset(LOD2Material, T4MPrefabFolder+"LODObjects/Material/"+PrefabName+"LOD2.mat");	
+						AssetDatabase.CreateAsset(LOD2Material, T4MPrefabFolder+"LODObjects/Material/"+PrefabName+"LOD2.mat");
 					if (ShaderLOD3S == LODShaderStatus.New)
 						AssetDatabase.CreateAsset(LOD3Material, T4MPrefabFolder+"LODObjects/Material/"+PrefabName+"LOD3.mat");
 				BasePrefab = PrefabUtility.CreateEmptyPrefab(T4MPrefabFolder+"LODObjects/"+PrefabName+".prefab");
@@ -1827,7 +1827,7 @@ public class T4MSC : EditorWindow {
 				}
 				else if (!System.IO.File.Exists(T4MPrefabFolder+"LODObjects/"+Next+"_LOD.prefab"))
 				{
-					
+
 					if (ShaderLOD1S == LODShaderStatus.New)
 						AssetDatabase.CreateAsset(LOD1Material, T4MPrefabFolder+"LODObjects/Material/"+Next+"LOD1.mat");
 					if (ShaderLOD2S == LODShaderStatus.New)
@@ -1842,13 +1842,13 @@ public class T4MSC : EditorWindow {
 			}while (!ExportSuccess);
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
-				
-		
-			
+
+
+
 			DestroyImmediate(LOD1Temp);
 			EditorUtility.DisplayDialog("T4M Message", "Construction Completed", "OK");
 	}
-	
+
 	void LODManager()
 	{
 		if (T4MMaster){
@@ -1859,61 +1859,61 @@ public class T4MSC : EditorWindow {
 		EditorGUILayout.Space();
 		GUILayout.Label("Culling LOD Object Mode", EditorStyles.boldLabel);
 		LODocclusion = (OccludeBy) EditorGUILayout.EnumPopup ("Mode", LODocclusion, GUILayout.Width(340));
-		
+
 		EditorGUILayout.Space();
 			EditorGUILayout.Space();
 		GUILayout.BeginHorizontal();
 				GUILayout.Label("Maximum View Distance", EditorStyles.boldLabel, GUILayout.Width(300));
 				MaximunView = EditorGUILayout.FloatField(MaximunView, GUILayout.Width(50));
-		GUILayout.EndHorizontal();	
-				
-			
+		GUILayout.EndHorizontal();
+
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			GUILayout.Label("LOD Update Interval in Seconde", EditorStyles.boldLabel, GUILayout.Width(400));
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("(less value = less performance)", GUILayout.Width(300));
 				UpdateInterval = EditorGUILayout.FloatField(UpdateInterval, GUILayout.Width(50));
 			GUILayout.EndHorizontal();
-			
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			GUILayout.BeginHorizontal();
 				GUILayout.Label("LOD2 Start", EditorStyles.boldLabel, GUILayout.Width(170));
 				GUILayout.FlexibleSpace();
 				StartLOD2= EditorGUILayout.FloatField(StartLOD2, GUILayout.Width(50));
 			GUILayout.EndHorizontal();
-			
+
 			GUILayout.BeginHorizontal();
 				GUILayout.FlexibleSpace();
 					StartLOD2= GUILayout.HorizontalScrollbar (StartLOD2,0.0f,10f,MaximunView,GUILayout.Width(350));
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
-			
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			if (StartLOD2 > StartLOD3-5)
 				StartLOD3= StartLOD2+5;
 			if(StartLOD2 > MaximunView-10)
 				StartLOD2 = MaximunView-10;
 			if(StartLOD3 > MaximunView-5)
 				StartLOD3 = MaximunView-5;
-				
+
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			
+
 			GUILayout.BeginHorizontal();
 				GUILayout.Label("LOD3 Start", EditorStyles.boldLabel, GUILayout.Width(170));
 				GUILayout.FlexibleSpace();
 				StartLOD3= EditorGUILayout.FloatField(StartLOD3, GUILayout.Width(50));
 			GUILayout.EndHorizontal();
-			
+
 			GUILayout.BeginHorizontal();
 				GUILayout.FlexibleSpace();
 					StartLOD3= GUILayout.HorizontalScrollbar (StartLOD3,0.0f,10f,MaximunView,GUILayout.Width(350));
@@ -1922,23 +1922,23 @@ public class T4MSC : EditorWindow {
 			GUILayout.FlexibleSpace();
 			GUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
-			
+
 			string buttonLod;
 			Texture Swap;
 			if (LodActivate == true){
-				buttonLod = "DEACTIVATE";	
-				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/on.png", typeof(Texture));	
+				buttonLod = "DEACTIVATE";
+				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/on.png", typeof(Texture));
 			}else{
 				buttonLod = "ACTIVATE";
 				Swap= (Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/off.png", typeof(Texture));
 			}
-			
-				if (GUILayout.Button(buttonLod, GUILayout.Width(100), GUILayout.Height(30))) 
+
+				if (GUILayout.Button(buttonLod, GUILayout.Width(100), GUILayout.Height(30)))
 				{
 						ActivateDeactivateLOD ();
 				}
 				GUILayout.Label(Swap, GUILayout.Width(75), GUILayout.Height(30));
-				
+
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 			GUILayout.FlexibleSpace();
@@ -1950,10 +1950,10 @@ public class T4MSC : EditorWindow {
 				GUILayout.EndHorizontal();
 			}
 	}
-	
+
 	void DeactivateLODByScript(){
 		T4MLodObjSC[] T4MLodObjGet =  GameObject.FindObjectsOfType(typeof(T4MLodObjSC)) as T4MLodObjSC[];
-						
+
 		for(var i=0;i<T4MLodObjGet.Length;i++){
 			T4MLodObjGet[i].LOD2.enabled= T4MLodObjGet[i].LOD3.enabled = false;
 			T4MLodObjGet[i].LOD1.enabled= true;
@@ -1962,8 +1962,8 @@ public class T4MSC : EditorWindow {
 			else if(LODModeControler ==LODMod.Independent_Control)
 				T4MLodObjGet[i].Mode =0;
 			PrefabUtility.RecordPrefabInstancePropertyModifications(T4MLodObjGet[i].GetComponent<T4MLodObjSC>());
-		}	
-		
+		}
+
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodScript= new T4MLodObjSC[0];
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjPosition= new Vector3[0];
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodStatus=new int[0];
@@ -1972,11 +1972,11 @@ public class T4MSC : EditorWindow {
 		Debug.Log ("The Number of Activated LOD Objects has changed, reactivate the billboards in the 'LOD' Tab.");
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().Awake();
 	}
-	
+
 	void ActivateDeactivateLOD (){
 		if (LodActivate == true){ //Lod actif
 					T4MLodObjSC[] T4MLodObjGet =  GameObject.FindObjectsOfType(typeof(T4MLodObjSC)) as T4MLodObjSC[];
-									
+
 					for(var i=0;i<T4MLodObjGet.Length;i++){
 						T4MLodObjGet[i].LOD2.enabled= T4MLodObjGet[i].LOD3.enabled = false;
 						T4MLodObjGet[i].LOD1.enabled= true;
@@ -1985,8 +1985,8 @@ public class T4MSC : EditorWindow {
 						else if(LODModeControler ==LODMod.Independent_Control)
 							T4MLodObjGet[i].Mode =0;
 						PrefabUtility.RecordPrefabInstancePropertyModifications(T4MLodObjGet[i].GetComponent<T4MLodObjSC>());
-					}	
-					
+					}
+
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodScript= new T4MLodObjSC[0];
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjPosition= new Vector3[0];
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodStatus=new int[0];
@@ -1997,19 +1997,19 @@ public class T4MSC : EditorWindow {
 				}else{
 					if (!PlayerCam)
 					PlayerCam=Camera.main.transform;
-		
+
 				T4MLodObjSC[] T4MLodObjGetR  = GameObject.FindObjectsOfType(typeof(T4MLodObjSC)) as T4MLodObjSC[];
-				Vector3[] T4MLodVectGetR = new Vector3[T4MLodObjGetR.Length]; 
-				int[] T4MLodValueGetR = new int[T4MLodObjGetR.Length]; 
-				
-				
+				Vector3[] T4MLodVectGetR = new Vector3[T4MLodObjGetR.Length];
+				int[] T4MLodValueGetR = new int[T4MLodObjGetR.Length];
+
+
 				for(int i=0;i<T4MLodObjGetR.Length;i++){
 					T4MLodVectGetR[i] = T4MLodObjGetR[i].transform.position;
-					
-					
-					float distanceFromCameraR = Vector3.Distance(new Vector3(T4MLodObjGetR[i].transform.position.x,PlayerCam.position.y,T4MLodObjGetR[i].transform.position.z),PlayerCam.transform.position);	
-					
-					
+
+
+					float distanceFromCameraR = Vector3.Distance(new Vector3(T4MLodObjGetR[i].transform.position.x,PlayerCam.position.y,T4MLodObjGetR[i].transform.position.z),PlayerCam.transform.position);
+
+
 					if(distanceFromCameraR <= MaximunView){
 						 if(distanceFromCameraR < StartLOD2)
 						 {
@@ -2029,9 +2029,9 @@ public class T4MSC : EditorWindow {
 							T4MLodObjGetR[i].LOD3.enabled= true;
 							T4MLodObjGetR[i].ObjLodStatus=T4MLodValueGetR[i] = 3;
 						}
-					}	
+					}
 					else
-					{ 
+					{
 						if (LODocclusion == OccludeBy.Max_View_Distance){
 							T4MLodObjGetR[i].LOD3.enabled= T4MLodObjGetR[i].LOD1.enabled= T4MLodObjGetR[i].LOD2.enabled = false;
 							T4MLodObjGetR[i].ObjLodStatus= T4MLodValueGetR[i] = 0;
@@ -2053,40 +2053,40 @@ public class T4MSC : EditorWindow {
 						T4MLodObjGetR[i].Mode =2;
 					PrefabUtility.RecordPrefabInstancePropertyModifications(T4MLodObjGetR[i].GetComponent<T4MLodObjSC>());
 				}
-		
+
 				if(LODModeControler ==LODMod.Mass_Control)
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().Mode =1;
 				else if(LODModeControler ==LODMod.Independent_Control)
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().Mode =2;
-		
-		
+
+
 				if (LODocclusion == OccludeBy.Max_View_Distance)
 					CurrentSelect.GetComponent <T4MObjSC>().LODbasedOnScript= true;
 				else CurrentSelect.GetComponent <T4MObjSC>().LODbasedOnScript= false;
-		
+
 				CurrentSelect.GetComponent <T4MObjSC>().ObjLodScript= T4MLodObjGetR;
 				CurrentSelect.GetComponent <T4MObjSC>().ObjPosition= T4MLodVectGetR;
 				CurrentSelect.GetComponent <T4MObjSC>().ObjLodStatus=T4MLodValueGetR;
 				CurrentSelect.GetComponent <T4MObjSC>().Interval =UpdateInterval;
 				CurrentSelect.GetComponent <T4MObjSC>().MaxViewDistance =MaximunView;
-				
+
 				CurrentSelect.GetComponent <T4MObjSC>().LOD2Start =StartLOD2;
 				CurrentSelect.GetComponent <T4MObjSC>().LOD3Start =StartLOD3;
 				CurrentSelect.GetComponent <T4MObjSC>().PlayerCamera = PlayerCam;
-				
+
 				PrefabUtility.RecordPrefabInstancePropertyModifications(CurrentSelect.gameObject.GetComponent<T4MObjSC>());
-				
+
 				LodActivate = true;
 				Debug.LogWarning ("LOD (re)activated !");
 			}
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().Awake();
 	}
-	
-	
+
+
 	void ConverterMenu()
-	{	
+	{
 		if (vertexInfo ==0 && trisInfo ==0 && partofT4MObj ==0){
-			
+
 			if ((CurrentSelect.GetComponent<Renderer>() || CurrentSelect.GetComponent<Terrain>() || NbrPartObj !=null && NbrPartObj.Length != 0) && !CurrentSelect.GetComponent <T4MObjSC>() && !CurrentSelect.GetComponent <T4MPartSC>() )
 			{
 				GUILayout.BeginHorizontal();
@@ -2101,23 +2101,23 @@ public class T4MSC : EditorWindow {
 						if (!terrainDat && CurrentSelect.GetComponent<Terrain>())
 							GetHeightmap();
 						GUILayout.Label(">> UnityTerrain to T4M Terrain (Experimental) <<", EditorStyles.boldLabel);
-					} 
+					}
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
 				EditorGUILayout.Space();
 					GUILayout.Label("Name", EditorStyles.boldLabel);
 				GUILayout.BeginHorizontal("box");
-					
+
 					 GUILayout.Label("(empty = Object Name)");
 					terrainName = GUILayout.TextField (terrainName, 25, GUILayout.Width(155));
 				GUILayout.EndHorizontal();
-				
+
 					if (CurrentSelect.GetComponent<Renderer>() && !CurrentSelect.GetComponent<Terrain>() || NbrPartObj !=null && NbrPartObj.Length != 0 && !CurrentSelect.GetComponent<Terrain>()){
 						GUILayout.BeginHorizontal();
 						GUILayout.Label("New Prefab", EditorStyles.boldLabel,GUILayout.Width(90));
 						NewPref = EditorGUILayout.Toggle(NewPref,GUILayout.Width(53));
 						GUILayout.EndHorizontal();
-				
+
 					}else{
 						GUILayout.BeginHorizontal();
 						GUILayout.Label("Keep the textures", EditorStyles.boldLabel,GUILayout.Width(150));
@@ -2125,13 +2125,13 @@ public class T4MSC : EditorWindow {
 						GUILayout.EndHorizontal();
 						 GUILayout.Label("(Can keep the first 4 splats and first Blend)",GUILayout.Width(300));
 					}
-					
+
 				if(CurrentSelect.GetComponent<Terrain>()){
 					EditorGUILayout.Space();
 					EditorGUILayout.Space();
 					GUILayout.Label("T4M Quality", EditorStyles.boldLabel);
-					
-					
+
+
 					EditorGUILayout.Space();
 					EditorGUILayout.Space();
 					GUILayout.BeginHorizontal();
@@ -2146,7 +2146,7 @@ public class T4MSC : EditorWindow {
 						GUILayout.FlexibleSpace();
 							T4MResolution= (int)GUILayout.HorizontalScrollbar (T4MResolution,0,32,350,GUILayout.Width(350));
 						GUILayout.FlexibleSpace();
-					GUILayout.EndHorizontal();	
+					GUILayout.EndHorizontal();
 					EditorGUILayout.Space();
 					EditorGUILayout.Space();
 					tRes = (HeightmapWidth)/T4MResolution;
@@ -2211,7 +2211,7 @@ public class T4MSC : EditorWindow {
 						else if(X*Y >= 45000)
 							GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ko.png", typeof(Texture)) as Texture);
 					GUILayout.EndHorizontal();
-					
+
 					GUILayout.BeginHorizontal();
 						GUILayout.Label("Flash",GUILayout.Width(300));
 						if(X*Y <= 45000)
@@ -2227,11 +2227,11 @@ public class T4MSC : EditorWindow {
 					GUILayout.EndHorizontal();
 					GUILayout.BeginHorizontal();
 						GUILayout.Label("Desktop",GUILayout.Width(300));
-						
+
 							GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ok.png", typeof(Texture)) as Texture);
-						
+
 					GUILayout.EndHorizontal();
-				
+
 				}
 				GUILayout.FlexibleSpace();
 				GUILayout.BeginHorizontal();
@@ -2239,7 +2239,7 @@ public class T4MSC : EditorWindow {
 				GUILayout.Label("Can Take Some Time", EditorStyles.boldLabel);
 				GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
+
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 						if (CurrentSelect.GetComponent<Renderer>() && !CurrentSelect.GetComponent<Terrain>() || NbrPartObj !=null && NbrPartObj.Length != 0 && !CurrentSelect.GetComponent<Terrain>())
@@ -2253,7 +2253,7 @@ public class T4MSC : EditorWindow {
 							if (GUILayout.Button("PROCESS", GUILayout.Width(100), GUILayout.Height(30))) {
 								ConvertUTerrain();
 							}
-						
+
 						}
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
@@ -2304,7 +2304,7 @@ public class T4MSC : EditorWindow {
 				trisInfo = 0;
 				partofT4MObj = 0;
 				T4MMenuToolbar = 1;
-				
+
 				if (nbrT4MObj == 0){
 					Child.gameObject.GetComponent <T4MObjSC>().EnabledLODSystem = ActivatedLOD;
 					Child.gameObject.GetComponent <T4MObjSC>().enabledBillboard = ActivatedBillboard;
@@ -2337,7 +2337,7 @@ public class T4MSC : EditorWindow {
 				trisInfo = 0;
 				partofT4MObj = 0;
 				T4MMenuToolbar = 1;
-				
+
 				if (nbrT4MObj == 0){
 					Child.gameObject.GetComponent <T4MObjSC>().EnabledLODSystem = ActivatedLOD;
 					Child.gameObject.GetComponent <T4MObjSC>().enabledBillboard = ActivatedBillboard;
@@ -2351,21 +2351,21 @@ public class T4MSC : EditorWindow {
 			}
 		}
 	}
-	
+
 	void PainterMenu()
 	{
 		if (CurrentSelect.GetComponent <T4MObjSC>())
 			{
-			
+
 			GUILayout.BeginHorizontal();
-				GUILayout.FlexibleSpace();	
+				GUILayout.FlexibleSpace();
 				MyT4MV = GUILayout.Toolbar(MyT4MV, MyT4MMen, GUILayout.Width(290), GUILayout.Height(20));
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 			switch (MyT4MV)
 			{
 				case 0:
-				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM") && 
+				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM") &&
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader") &&
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile") && !CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Tiling")){
 						PixelPainterMenu();
@@ -2373,22 +2373,22 @@ public class T4MSC : EditorWindow {
 				break;
 				case 1:
 				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0") && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1")&& CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control")){
-			
+
 				EditorGUILayout.Space();
 				InitPincil();
 				GUILayout.BeginHorizontal();
 					GUILayout.FlexibleSpace();
 						GUILayout.BeginHorizontal("box", GUILayout.Width(310));
 						GUILayout.FlexibleSpace();
-						
+
 							selProcedural = GUILayout.SelectionGrid (selProcedural, TexTexture, 6 ,"gridlist",GUILayout.Width(340), GUILayout.Height(58));
-						
-						
+
+
 						GUILayout.FlexibleSpace();
 						GUILayout.EndHorizontal();
 					GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
-				
+
 				GUILayout.Label("Add / Replace / Substances Update" , EditorStyles.boldLabel);
 					EditorGUILayout.BeginVertical("box");
 					EditorGUILayout.BeginHorizontal();
@@ -2396,7 +2396,7 @@ public class T4MSC : EditorWindow {
 						 if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/up.png", typeof(Texture)),GUILayout.Width(53))) {
 							if (!PreceduralAdd && !MaterialAdd && Precedural)
 								PreceduralAdd = Precedural;
-					
+
 								if (PreceduralAdd){
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat0", PreceduralAdd.GetInputTexture("_MainTex"));
 								if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_BumpSplat0"))
@@ -2460,7 +2460,7 @@ public class T4MSC : EditorWindow {
 							if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/up.png", typeof(Texture)),GUILayout.Width(53))) {
 								if (!PreceduralAdd && !MaterialAdd && Precedural)
 								PreceduralAdd = Precedural;
-					
+
 								if (PreceduralAdd){
 									CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat4", PreceduralAdd.GetInputTexture ("_MainTex"));
 								}else if (MaterialAdd){
@@ -2475,7 +2475,7 @@ public class T4MSC : EditorWindow {
 							if(GUILayout.Button ((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/up.png", typeof(Texture)),GUILayout.Width(53))) {
 								if (!PreceduralAdd && !MaterialAdd && Precedural)
 								PreceduralAdd = Precedural;
-					
+
 								if (PreceduralAdd){
 									CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat5", PreceduralAdd.GetInputTexture ("_MainTex"));
 							}else if (MaterialAdd){
@@ -2486,18 +2486,18 @@ public class T4MSC : EditorWindow {
 							MaterialAdd=null;
 							IniNewSelect();
 						}
-						
+
 				EditorGUILayout.EndHorizontal();
-				
-				
+
+
 				string AssetName= AssetDatabase.GetAssetPath(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat"+selProcedural)) as string;
 
 				Substance.Game.Substance substance = AssetDatabase.LoadAssetAtPath(AssetName, typeof(Substance.Game.Substance)) as Substance.Game.Substance;
 				if (substance)
                 {
-					
+
 				 	List<SubstanceGraph> ProcMat = substance.graphs as List<SubstanceGraph>;
-					
+
 					for (int i = 0; i<ProcMat.Count;i++){
 						if (ProcMat[i].name+"_Diffuse" == CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat"+selProcedural).name){
 							Precedural = ProcMat[i];
@@ -2505,34 +2505,34 @@ public class T4MSC : EditorWindow {
 						}
 					}
 				}else Precedural = null;
-				
+
 				EditorGUILayout.Space();
 				EditorGUILayout.Space();
-				
-				
+
+
 					MaterialTyp =(MaterialType) EditorGUILayout.EnumPopup ("Material Type", MaterialTyp, GUILayout.Width(340));
 					EditorGUILayout.BeginHorizontal();
-					
+
 					if (MaterialTyp != MaterialType.Classic){
 						GUILayout.Label("Substances To Add : ");
 						MaterialAdd = null;
 						PreceduralAdd = EditorGUILayout.ObjectField(PreceduralAdd, typeof(SubstanceGraph),true, GUILayout.Width(220)) as SubstanceGraph;
 					}
-					else{ 
+					else{
 						GUILayout.Label("Texture To Add : ");
 						PreceduralAdd = null;
 						MaterialAdd = EditorGUILayout.ObjectField(MaterialAdd, typeof(Texture2D),true, GUILayout.Width(220)) as Texture;
 				}
-				
-				
+
+
 				GUILayout.FlexibleSpace();
-				
+
 				EditorGUILayout.EndVertical();
 				EditorGUILayout.Space();
 				EditorGUILayout.EndHorizontal();
-				
+
 				EditorGUILayout.Space();
-				
+
 				if (Precedural){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
 					EditorGUILayout.BeginHorizontal("box");
@@ -2543,15 +2543,15 @@ public class T4MSC : EditorWindow {
 						GUILayout.FlexibleSpace();
 					 EditorGUILayout.EndHorizontal();
 				}else{
-					
-					ClassicMat();	
-					
+
+					ClassicMat();
+
 				}
 				}
 				break;
-				
+
 			}
-				
+
 		}else
 		{
 			GUILayout.BeginHorizontal();
@@ -2559,11 +2559,11 @@ public class T4MSC : EditorWindow {
 					GUILayout.Label("Please, select the T4M Object", EditorStyles.boldLabel);
 					GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
-			
+
 		}
 	}
 	void ClassicMat(){
-			
+
 			if (selProcedural == 0){
 				if(Layer1){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
@@ -2579,7 +2579,7 @@ public class T4MSC : EditorWindow {
 				GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
 				}
-				
+
 			}else if (selProcedural == 1){
 				if(Layer2){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
@@ -2595,7 +2595,7 @@ public class T4MSC : EditorWindow {
 				GUILayout.FlexibleSpace();
 				GUILayout.EndHorizontal();
 				}
-				
+
 			}else if (selProcedural == 2){
 				if(Layer3){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
@@ -2611,7 +2611,7 @@ public class T4MSC : EditorWindow {
 					GUILayout.FlexibleSpace();
 					GUILayout.EndHorizontal();
 				}
-				
+
 			}else if (selProcedural == 3){
 				if(Layer4){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
@@ -2623,14 +2623,14 @@ public class T4MSC : EditorWindow {
 						GUILayout.Label((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/TBump.jpg", typeof(Texture)));
 						Layer4Bump=EditorGUILayout.ObjectField(Layer4Bump, typeof(Texture2D),true, GUILayout.Width(75), GUILayout.Height(75)) as Texture;
 						CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_BumpSplat3",Layer4Bump);
-						
+
 					}
 						GUILayout.FlexibleSpace();
 						GUILayout.EndHorizontal();
 				}
-				
+
 			}else if (selProcedural == 4){
-				if(Layer5){	
+				if(Layer5){
 					GUILayout.Label("Modify" , EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal("Box");
 					GUILayout.Label((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/TDiff.jpg", typeof(Texture)));
@@ -2648,7 +2648,7 @@ public class T4MSC : EditorWindow {
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat5",Layer6);
 				}
 			}
-		
+
 			if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 				GUILayout.Label("Manual Lightmap Add" , EditorStyles.boldLabel);
 				GUILayout.BeginHorizontal("Box");
@@ -2659,11 +2659,11 @@ public class T4MSC : EditorWindow {
 				GUILayout.EndHorizontal();
 			}
 	}
-	
+
 	void ProjectionWorldConfig(){
 					if (UpSideTile.x != UpSideTile.y && joinTiles==true || UpSideTile.z != UpSideTile.w && joinTiles==true){
 						joinTiles = false;
-					}	
+					}
 					EditorGUILayout.Space();
 					GUILayout.Label("Painting Menu is not available for this shader" , EditorStyles.boldLabel);
 					EditorGUILayout.Space();
@@ -2689,16 +2689,16 @@ public class T4MSC : EditorWindow {
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetFloat ("_UpSide",UpSideF);
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetFloat ("_Blend",BlendFac);
 	}
-	
+
 	void Substance()
 	{
-		
+
 			var inputs = Precedural.GetInputProperties();
-			
+
 			for (int i   = 0; i < inputs.Length; i++) {
 				var input = inputs[i];
 				var type = input.type;
-								
+
 				if (type == SubstanceGraph.InputPropertiesType.Boolean) {
 					var inputBool = Precedural.GetInputBool (input.name);
 					var oldInputBool = inputBool;
@@ -2706,27 +2706,27 @@ public class T4MSC : EditorWindow {
 					if (inputBool != oldInputBool)
 						Precedural.SetInputBool(input.name, inputBool);
 				}
-				
+
 				else if (type == SubstanceGraph.InputPropertiesType.Float) {
 					//if (input.hasRange) 未对应
 					{
-					
+
 						GUILayout.Label (input.name, EditorStyles.boldLabel);
-						
+
 						var inputFloat = Precedural.GetInputFloat(input.name);
 						var oldInputFloat = inputFloat;
-						
+
 						inputFloat = EditorGUILayout.Slider (inputFloat, input.minimum[0], input.maximum[0]);
 						if (inputFloat != oldInputFloat)
 							Precedural.SetInputFloat(input.name, inputFloat);
 					}
 				}
-				
+
 				else if (type == SubstanceGraph.InputPropertiesType.Vector2 ||
 					type == SubstanceGraph.InputPropertiesType.Vector3 ||
 					type == SubstanceGraph.InputPropertiesType.Vector4
 				) {
-					
+
 					//if (input.hasRange)
 				    {
 				        GUILayout.Label(input.name, EditorStyles.boldLabel);
@@ -2782,24 +2782,24 @@ public class T4MSC : EditorWindow {
 
             else if (type == SubstanceGraph.InputPropertiesType.Color) {
 					GUILayout.Label (input.name, EditorStyles.boldLabel);
-					
+
 					var colorInput = Precedural.GetInputColor(input.name, 0); // color3 转成 color4
 					var oldColorInput = colorInput;
-					
+
 					colorInput =EditorGUILayout.ColorField("Shader Color", colorInput);
-					
+
 					if (colorInput != oldColorInput)
 						Precedural.SetInputColor(input.name, colorInput);
 				}
-				
-				
+
+
 				else if (type == SubstanceGraph.InputPropertiesType.Enum) {
 					GUILayout.Label (input.name, EditorStyles.boldLabel);
-					
+
 					var enumInput = Precedural.GetInputInt(input.name);
 					var oldEnumInput = enumInput;
 					var enumOptions = input.enumOptions;
-					
+
 					enumInput = GUILayout.SelectionGrid (enumInput, enumOptions, 1);
 					if (enumInput != oldEnumInput)
 						Precedural.SetInputInt(input.name, enumInput);
@@ -2816,12 +2816,12 @@ public class T4MSC : EditorWindow {
 		if (CurrentSelect.GetComponent (typeof(T4MObjSC)))
 		{
 			GUILayout.BeginHorizontal();
-				GUILayout.FlexibleSpace();	
+				GUILayout.FlexibleSpace();
 				EnumMyT4MV = GUILayout.Toolbar(EnumMyT4MV, EnumMyT4M, GUILayout.Width(290), GUILayout.Height(20));
 				GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
-					
-			
+
+
 			GUILayout.Label("Cleaning Scene", EditorStyles.boldLabel);
 			GUILayout.BeginHorizontal();
 				GUILayout.FlexibleSpace();
@@ -2844,20 +2844,20 @@ public class T4MSC : EditorWindow {
 			{
 				case 0:
 				GUILayout.Label("Shader Model", EditorStyles.boldLabel);
-				
+
 				ShaderModel =(SM) EditorGUILayout.EnumPopup ("Shader Model", ShaderModel, GUILayout.Width(340));
-				
-				
+
+
 				if (ShaderModel == SM.ShaderModel1){
 					MenuTextureSM1 =(EnumShaderGLES1) EditorGUILayout.EnumPopup ("Shader", MenuTextureSM1, GUILayout.Width(340));
-				}else if (ShaderModel == SM.ShaderModel2){	
+				}else if (ShaderModel == SM.ShaderModel2){
 					MenuTextureSM2 =(EnumShaderGLES2) EditorGUILayout.EnumPopup ("Shader", MenuTextureSM2, GUILayout.Width(340));
 				}else if (ShaderModel == SM.ShaderModel3)
 					MenuTextureSM3 =(EnumShaderGLES3) EditorGUILayout.EnumPopup ("Shader", MenuTextureSM3, GUILayout.Width(340));
 				else CustomShader=EditorGUILayout.ObjectField("Select your Shader",CustomShader, typeof(Shader),true, GUILayout.Width(350)) as Shader;
 				EditorGUILayout.Space();
-				
-		
+
+
 				if (ShaderModel != SM.CustomShader){
 				GUILayout.Label("Shader Compatibility", EditorStyles.boldLabel);
 						GUILayout.BeginHorizontal();
@@ -2873,7 +2873,7 @@ public class T4MSC : EditorWindow {
 									&& (ShaderModel == SM.ShaderModel2 && MenuTextureSM2 != EnumShaderGLES2.T4M_5_Textures_HighSpec )&& (ShaderModel == SM.ShaderModel2 && MenuTextureSM2 != EnumShaderGLES2.T4M_3_Textures_Bumped_DirectionalLM)&& ( ShaderModel == SM.ShaderModel2 && MenuTextureSM2 != EnumShaderGLES2.T4M_6_Textures_Unlit_Lightmap_Compatible)
 									&& (ShaderModel == SM.ShaderModel2 && MenuTextureSM2 != EnumShaderGLES2.T4M_World_Projection_HighSpec)
 									&& (ShaderModel == SM.ShaderModel2 &&MenuTextureSM2 != EnumShaderGLES2.T4M_World_Projection_Unlit_Lightmap_Compatible)){
-						
+
 								GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ok.png", typeof(Texture)) as Texture);
 							}else{
 								GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ko.png", typeof(Texture)) as Texture);
@@ -2886,7 +2886,7 @@ public class T4MSC : EditorWindow {
 						GUILayout.BeginHorizontal();
 							GUILayout.Label("Unity WebPlayer",GUILayout.Width(300));
 							GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ok.png", typeof(Texture)) as Texture);
-							
+
 						GUILayout.EndHorizontal();
 						GUILayout.BeginHorizontal();
 							GUILayout.Label("Flash",GUILayout.Width(300));
@@ -2910,23 +2910,23 @@ public class T4MSC : EditorWindow {
 							else
 								GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/ko.png", typeof(Texture)) as Texture);
 						GUILayout.EndHorizontal();
-						
+
 					}
-				
+
 				EditorGUILayout.Space();
-				
-				
+
+
 				GUILayout.BeginHorizontal();
 				GUILayout.Label("Master T4M Object", EditorStyles.boldLabel, GUILayout.Width(150));
-				
-				
+
+
 				T4MMaster = EditorGUILayout.Toggle(T4MMaster);
-				
+
 				GUILayout.EndHorizontal();
-				
+
 					if(T4MMaster){
-						GUILayout.BeginVertical("box");	
-						
+						GUILayout.BeginVertical("box");
+
 							GUILayout.BeginHorizontal();
 							GUILayout.Label("Scene Camera", EditorStyles.boldLabel, GUILayout.Width(190));
 							PlayerCam= EditorGUILayout.ObjectField(PlayerCam, typeof(Transform),true) as Transform;
@@ -2936,16 +2936,16 @@ public class T4MSC : EditorWindow {
 							ActivatedLOD = EditorGUILayout.Toggle(ActivatedLOD);
 							GUILayout.Label("   Editor Preview", EditorStyles.boldLabel, GUILayout.Width(120));
 							CurrentSelect.GetComponent<T4MObjSC>().LODPreview = EditorGUILayout.Toggle(CurrentSelect.GetComponent<T4MObjSC>().LODPreview);
-							
+
 						GUILayout.EndHorizontal();
-						
+
 						GUILayout.BeginHorizontal();
 							GUILayout.Label("Activate Billboard System  ", EditorStyles.boldLabel, GUILayout.Width(190));
 							ActivatedBillboard = EditorGUILayout.Toggle(ActivatedBillboard);
 							GUILayout.Label("   Editor Preview", EditorStyles.boldLabel, GUILayout.Width(120));
 							CurrentSelect.GetComponent<T4MObjSC>().BillboardPreview = EditorGUILayout.Toggle(CurrentSelect.GetComponent<T4MObjSC>().BillboardPreview);
 						GUILayout.EndHorizontal();
-						
+
 						GUILayout.BeginHorizontal();
 							GUILayout.Label("Activate LayerCullDistance  ", EditorStyles.boldLabel, GUILayout.Width(190));
 							ActivatedLayerCul = EditorGUILayout.Toggle(ActivatedLayerCul);
@@ -2955,15 +2955,15 @@ public class T4MSC : EditorWindow {
 						EditorGUILayout.Space();
 						if (ActivatedLayerCul){
 							GUILayout.BeginVertical("box");
-						
+
 								GUILayout.Label("Maximum distances of view", EditorStyles.boldLabel, GUILayout.Width(220));
-								CloseDistMaxView = EditorGUILayout.Slider("Close Distance",CloseDistMaxView,0,500);	
-								NormalDistMaxView = EditorGUILayout.Slider("Middle Distance",NormalDistMaxView,0,500);	
+								CloseDistMaxView = EditorGUILayout.Slider("Close Distance",CloseDistMaxView,0,500);
+								NormalDistMaxView = EditorGUILayout.Slider("Middle Distance",NormalDistMaxView,0,500);
 								FarDistMaxView = EditorGUILayout.Slider("Far Distance",FarDistMaxView,0,500);
 								BGDistMaxView = EditorGUILayout.Slider("BackGround Distance",BGDistMaxView,0,10000);
 							GUILayout.EndVertical();
-						} 
-						
+						}
+
 						if (BGDistMaxView<FarDistMaxView)
 							BGDistMaxView = FarDistMaxView;
 						else if (FarDistMaxView<NormalDistMaxView)
@@ -2977,12 +2977,12 @@ public class T4MSC : EditorWindow {
 								GUILayout.FlexibleSpace();
 										if (GUILayout.Button("UPDATE", GUILayout.Width(100), GUILayout.Height(25))) {
 											MyT4MApplyChange();
-							
+
 										}
 								GUILayout.FlexibleSpace();
 							GUILayout.EndHorizontal();
 						GUILayout.FlexibleSpace();
-				break;	
+				break;
 				case 1:
 				EditorGUILayout.Space();
 					GUILayout.BeginHorizontal();
@@ -2990,7 +2990,7 @@ public class T4MSC : EditorWindow {
 						CurrentSelect.gameObject.GetComponent <T4MObjSC>().ActiveWind= EditorGUILayout.Toggle(CurrentSelect.gameObject.GetComponent <T4MObjSC>().ActiveWind);
 					GUILayout.EndHorizontal();
 				EditorGUILayout.Space();
-				GUILayout.BeginVertical("box");	
+				GUILayout.BeginVertical("box");
 					EditorGUILayout.Space();
 					GUILayout.BeginHorizontal();
 						GUILayout.FlexibleSpace();
@@ -3019,17 +3019,17 @@ public class T4MSC : EditorWindow {
 								CurrentSelect.gameObject.GetComponent <T4MObjSC>().GrassWindFrequency = 1.5f;
 							}
 					GUILayout.EndHorizontal();
-				GUILayout.EndVertical();	
+				GUILayout.EndVertical();
 				GUILayout.FlexibleSpace();
 							GUILayout.BeginHorizontal();
 								GUILayout.FlexibleSpace();
 										if (GUILayout.Button("UPDATE", GUILayout.Width(100), GUILayout.Height(30))) {
 											MyT4MApplyChange();
-							
+
 										}
 								GUILayout.FlexibleSpace();
 							GUILayout.EndHorizontal();
-				GUILayout.FlexibleSpace();	
+				GUILayout.FlexibleSpace();
 					GUILayout.BeginHorizontal();
 						GUILayout.FlexibleSpace();
 							GUILayout.Label("By Forst (Lars)", EditorStyles.boldLabel, GUILayout.Width(105), GUILayout.Height(15));
@@ -3051,203 +3051,203 @@ public class T4MSC : EditorWindow {
 			GUILayout.EndHorizontal();
 		}
 	}
-	
+
 	void MyT4MApplyChange()
 	{
 		if (ShaderModel == SM.ShaderModel1){
-			//Diffuse SM1 
-			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall){	
+			//Diffuse SM1
+			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall");
 			}
-			else 
-			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_BeastLM_1DC){	
+			else
+			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_BeastLM_1DC){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC");
 			}
-			else 
-			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_CustoLM_1DC){	
+			else
+			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_CustoLM_1DC){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC");
 			}
 		}else if (ShaderModel == SM.ShaderModel2){
 				//Unlit SM2
-				if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Unlit_Lightmap_Compatible){	
+				if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Unlit_Lightmap_Compatible){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Unlit_Lightmap_Compatible){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Unlit_Lightmap_Compatible){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 3 Textures Unlit LM");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Unlit_Lightmap_Compatible){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM");		
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_Unlit_Lightmap_Compatible){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Unlit_Lightmap_Compatible){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_Unlit_Lightmap_Compatible){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 5 Textures Unlit LM");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_Lightmap_Compatible){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_Lightmap_Compatible){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit LM");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_No_Lightmap){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_No_Lightmap){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit NoLM");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Unlit_Lightmap_Compatible){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Unlit_Lightmap_Compatible){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM");
 				}
-				
+
 				//Diffuse SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_HighSpec){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_HighSpec){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_HighSpec){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures");						
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_HighSpec){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures");						
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_HighSpec){	
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_HighSpec){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_HighSpec){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_HighSpec){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 5 Textures");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_HighSpec){	
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_HighSpec){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_HighSpec){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_HighSpec){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader");
 				}
-				
+
 				//Specular SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Specular){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Specular){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 2 Textures Spec");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Specular){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec");						
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Specular){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec");						
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Specular){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Specular){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec");
 				}
-				
-				
+
+
 				//4 mobile lightmap SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_4_Mobile){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_4_Mobile){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 2 Textures for Mobile");
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_4_Mobile){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile");						
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_4_Mobile){			
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_4_Mobile){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_4_Mobile){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 4 Textures for Mobile");
-				}//else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Mobile){			
+				}//else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Mobile){
 				//	CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile");
 				//}
-				
+
 				//Toon SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Toon){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 2 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Toon){	
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Toon){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 3 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Toon){	
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Toon){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 4 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
 				}
-				
+
 				//Bumped SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped");		
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped");
-				}/*else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Bumped){	
+				}/*else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Bumped){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 4 Textures Bumped");
 				}*/
-				
+
 				//Mobile Bumped
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_Mobile){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile");		
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_Mobile){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_Mobile){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_Mobile){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped Mobile");
 				}
-			
+
 				//Mobile Bumped Spec
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC_Mobile){			
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC_Mobile){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular Mobile");
 				}
-			
+
 				//Mobile Bump LM
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM_Mobile){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile");		
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM_Mobile){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile");
 				}
-			
-			
-			
+
+
+
 				//Bump Spec SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular");		
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_SPEC){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_SPEC){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bump Specular");
 				}
 				//Bump LM SM2
-				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM");		
-				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_DirectionalLM){	
+				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM");
+				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_DirectionalLM){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 3 Textures Bumped DLM");
 				}
-				
+
 		}
 		else if (ShaderModel == SM.ShaderModel3){
 				//Diffuse SM3
-				if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Diffuse){	
+				if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Diffuse){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 2 Textures");
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Diffuse){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures");						
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Diffuse){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures");						
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_5_Textures_Diffuse){	
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Diffuse){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures");
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Diffuse){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures");
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_5_Textures_Diffuse){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 5 Textures");
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_6_Textures_Diffuse){	
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_6_Textures_Diffuse){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 6 Textures");
 				}
-			
+
 				//Specular
-				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Specular){	
+				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Specular){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 2 Textures Spec");
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Specular){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec");						
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Specular){							
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec");						
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Specular){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec");
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Specular){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec");
 				}
-				
+
 				//Bumped SM3
-				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump");		
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped){	
+				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump");
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 3 Textures Bump");
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped){	
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 4 Textures Bump");
 				}
-				
+
 				//Bump Spec SM3
-				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped_SPEC){			
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec");		
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped_SPEC){	
+				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped_SPEC){
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec");
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped_SPEC){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec");
-				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped_SPEC){	
+				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped_SPEC){
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec");
 				}
-			
+
 		}else{
 			Material temp  = new Material( CustomShader );
 			if (CustomShader !=null && temp.HasProperty("_Control") && temp.HasProperty("_Splat0") && temp.HasProperty("_Splat1")){
 				CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader = CustomShader;
-				
+
 			}else EditorUtility.DisplayDialog("T4M Message", "This Shader is not compatible", "OK");
 		}
-		
-		
-		
+
+
+
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Control2")){
 			Texture Control2;
 			if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control") != null){
 				Control2 =(Texture) AssetDatabase.LoadAssetAtPath(T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control").name+"C2.png",typeof (Texture));
 			}else Control2 =(Texture) AssetDatabase.LoadAssetAtPath(T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.name+"C2.png",typeof (Texture));
-		
+
 				if (Control2 == null)
 					CreateControl2Text();
 				else CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Control2", Control2);
 		}
-		
-		
-		
+
+
+
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0"))
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat0", Layer1);
 
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat1"))
-			CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat1", Layer2);	
-		
+			CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat1", Layer2);
+
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat2")){
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Splat2", Layer3);
 		}
@@ -3288,8 +3288,8 @@ public class T4MSC : EditorWindow {
 			CurrentSelect.GetComponent <T4MObjSC>().enabledBillboard = false;
 			CurrentSelect.GetComponent <T4MObjSC>().enabledLayerCul = false;
 			CurrentSelect.GetComponent <T4MObjSC>().Master = 0;
-			
-			T4MLodObjSC[] T4MLodObjGet =  GameObject.FindObjectsOfType(typeof(T4MLodObjSC)) as T4MLodObjSC[];				
+
+			T4MLodObjSC[] T4MLodObjGet =  GameObject.FindObjectsOfType(typeof(T4MLodObjSC)) as T4MLodObjSC[];
 			for(var i=0;i<T4MLodObjGet.Length;i++){
 				T4MLodObjGet[i].LOD2.enabled= T4MLodObjGet[i].LOD3.enabled = false;
 				T4MLodObjGet[i].LOD1.enabled= true;
@@ -3298,17 +3298,17 @@ public class T4MSC : EditorWindow {
 				else if(LODModeControler ==LODMod.Independent_Control)
 					T4MLodObjGet[i].Mode =0;
 				PrefabUtility.RecordPrefabInstancePropertyModifications(T4MLodObjGet[i].GetComponent<T4MLodObjSC>());
-			}	
+			}
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodScript= new T4MLodObjSC[0];
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjPosition= new Vector3[0];
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjLodStatus=new int[0];
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().Mode =0;
-			
+
 			T4MBillBObjSC[] T4MBillObjGet =  GameObject.FindObjectsOfType(typeof(T4MBillBObjSC)) as T4MBillBObjSC[];
 			for(var i=0;i<T4MBillObjGet.Length;i++){
 				T4MBillObjGet[i].Render.enabled = true;
 				T4MBillObjGet[i].Transf.LookAt(Vector3.zero , Vector3.up);
-			}	
+			}
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition= new Vector3[0];
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillStatus=new int[0];
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillScript= new T4MBillBObjSC[0];
@@ -3317,7 +3317,7 @@ public class T4MSC : EditorWindow {
 		TexTexture = null;
 		IniNewSelect();
 	}
-	
+
 	void CreateControl2Text()
 	{
 		Texture2D Control2 = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
@@ -3325,17 +3325,17 @@ public class T4MSC : EditorWindow {
 		for (var t = 0; t < ColorBase.Length; t++) {
 				ColorBase[t] = new Color (1, 0, 0, 0);
 		}
-		
+
 		Control2.SetPixels (ColorBase);
 		string path;
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control") != null){
 		 	path = T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control").name+"C2.png";
-			
-		}else path = T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.name+"C2.png";	
+
+		}else path = T4MPrefabFolder+"Terrains/Texture/"+CurrentSelect.gameObject.name+"C2.png";
 		byte[] data = Control2.EncodeToPNG ();
 		File.WriteAllBytes (path, data);
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
-		
+
 		TextureImporter TextureI= AssetImporter.GetAtPath (path) as TextureImporter;
 		TextureI.textureFormat = TextureImporterFormat.ARGB32;
 		TextureI.isReadable = true;
@@ -3343,43 +3343,43 @@ public class T4MSC : EditorWindow {
 		TextureI.mipmapEnabled = false;
 		TextureI.wrapMode = TextureWrapMode.Clamp;
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
-		
+
 		Texture Contr2 =(Texture) AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_Control2", Contr2);
 		IniNewSelect();
 	}
-	
-	
+
+
 	 void ConvertUTerrain()
 	{
 		if (terrainName=="")
-			terrainName =CurrentSelect.name; 
-				
+			terrainName =CurrentSelect.name;
+
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/");
-		} 
+		}
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/Material/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/Material/");
-		} 
+		}
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/Texture/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/Texture/");
-		} 
+		}
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/Meshes/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/Meshes/");
-		} 
-		AssetDatabase.Refresh(); 
-		
+		}
+		AssetDatabase.Refresh();
+
 		terrain = CurrentSelect.GetComponent <Terrain>().terrainData;
-        int w = terrain.heightmapWidth;
-        int h = terrain.heightmapHeight;
+        int w = terrain.heightmapResolution;
+        int h = terrain.heightmapResolution;
         Vector3 meshScale = terrain.size;
         meshScale = new Vector3(meshScale.x/(h-1)*tRes, meshScale.y, meshScale.z/(w-1)*tRes);
 	    Vector2 uvScale =  new Vector2((float)(1.0/(w-1)),(float) (1.0/(h-1)));
-		
+
         float[,] tData = terrain.GetHeights(0, 0, w, h);
         w = (int)((w-1) / tRes + 1);
         h = (int)((h-1) / tRes + 1);
@@ -3395,7 +3395,7 @@ public class T4MSC : EditorWindow {
 				tUV[y*w + x] = Vector2.Scale(new Vector2(y*tRes, x*tRes), uvScale);
             }
         }
-		
+
 		y  =0;
 		x =0;
         int  index = 0;
@@ -3404,19 +3404,19 @@ public class T4MSC : EditorWindow {
                     tPolys[index++] = (y*w) + x;
                     tPolys[index++] = ((y+1) * w) + x;
                     tPolys[index++] = (y*w) + x + 1;
-        
+
                     tPolys[index++] = ((y+1) * w) + x;
                     tPolys[index++] = ((y+1) * w) + x + 1;
                     tPolys[index++] = (y*w) + x + 1;
                 }
             }
-		
+
 			bool ExportNameSuccess = false;
 			int num =1;
 			string Next;
-			do { 
+			do {
 				Next=terrainName+num;
-				
+
 				if (!System.IO.File.Exists(T4MPrefabFolder+"Terrains/"+terrainName+".prefab"))
 				{
 					FinalExpName = terrainName;
@@ -3429,11 +3429,11 @@ public class T4MSC : EditorWindow {
 				}
 				num++;
 			}while (!ExportNameSuccess);
-	
+
 		 //StreamWriter  sw = new StreamWriter(T4MPrefabFolder+"Terrains/Meshes/"+FinalExpName+".obj");
 		StreamWriter  sw = new StreamWriter(FinalExpName+".obj");
         try {
-           
+
             sw.WriteLine("# T4M File");
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             counter = tCount = 0;
@@ -3446,7 +3446,7 @@ public class T4MSC : EditorWindow {
                    Append(tVertices[i].z.ToString());
                 sw.WriteLine(sb);
             }
-			
+
             for (int i = 0; i < tUV.Length; i++) {
                 UpdateProgress();
                 StringBuilder sb = new StringBuilder("vt ", 22);
@@ -3467,10 +3467,10 @@ public class T4MSC : EditorWindow {
             Debug.Log("Error saving file: " + err.Message);
         }
         sw.Close();
-		AssetDatabase.SaveAssets(); 
-	
+		AssetDatabase.SaveAssets();
+
 		string path = T4MPrefabFolder+"Terrains/Texture/"+FinalExpName+".png";
-		
+
 		//Control Texture Creation or Recuperation
 		string AssetName = AssetDatabase.GetAssetPath(CurrentSelect.GetComponent <Terrain>().terrainData) as string;
 		UnityEngine.Object[] AssetName2 = AssetDatabase.LoadAllAssetsAtPath (AssetName);
@@ -3483,7 +3483,7 @@ public class T4MSC : EditorWindow {
 					AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 				}
 			}
-		}else{ 
+		}else{
 			Texture2D NewMaskText = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
 			Color[] ColorBase = new Color[512 * 512];
 			for (var t = 0; t < ColorBase.Length; t++) {
@@ -3495,10 +3495,10 @@ public class T4MSC : EditorWindow {
 			AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 		}
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
-		
+
 		UpdateProgress();
-		
-		//Modification de la Texture 
+
+		//Modification de la Texture
 		TextureImporter TextureI= AssetImporter.GetAtPath (path) as TextureImporter;
 		TextureI.textureFormat = TextureImporterFormat.ARGB32;
 		TextureI.isReadable = true;
@@ -3506,18 +3506,18 @@ public class T4MSC : EditorWindow {
 		TextureI.mipmapEnabled = false;
 		TextureI.wrapMode = TextureWrapMode.Clamp;
 		AssetDatabase.Refresh();
-		
+
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
-		
+
 		UpdateProgress();
-		
+
 		//Creation du Materiel
 		Material Tmaterial;
 		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat", ImportAssetOptions.ForceUpdate);
 		AssetDatabase.Refresh();
-		
+
 		//Recuperation des Texture du terrain
 		if (keepTexture){
 			SplatPrototype[] texts = CurrentSelect.GetComponent <Terrain>().terrainData.splatPrototypes;
@@ -3528,32 +3528,32 @@ public class T4MSC : EditorWindow {
 				}
 			}
 		}
-		
+
 		//Attribution de la Texture Control sur le materiau
 		Texture test =(Texture) AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
 		Tmaterial.SetTexture ("_Control", test);
-		
-		
+
+
 		UpdateProgress();
-		
-		
+
+
 		//Deplacement de l'obj dans les repertoire mesh
 		FileUtil.CopyFileOrDirectory (FinalExpName+".obj",T4MPrefabFolder+"Terrains/Meshes/"+FinalExpName+".obj");
 		FileUtil.DeleteFileOrDirectory(FinalExpName+".obj");
-		
-		
-		
+
+
+
 		//Force Update
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Meshes/"+FinalExpName+".obj", ImportAssetOptions.ForceUpdate);
-		
+
 		UpdateProgress();
-		
+
 		//Instance du T4M
 		GameObject  prefab = (GameObject)AssetDatabase.LoadAssetAtPath(T4MPrefabFolder+"Terrains/Meshes/"+FinalExpName+".obj", typeof(GameObject));
-		
+
 		AssetDatabase.Refresh();
-		
-		
+
+
 		GameObject forRotate = (GameObject) Instantiate (prefab, CurrentSelect.transform.position, Quaternion.identity) as GameObject;
 		Transform childCheck = forRotate.transform.Find("default");
 		Child = childCheck.gameObject;
@@ -3562,27 +3562,27 @@ public class T4MSC : EditorWindow {
 		Child.name = FinalExpName;
 		Child.AddComponent<T4MObjSC>();
 		//Child.transform.rotation= Quaternion.Euler(0, 90, 0);
-		
+
 		UpdateProgress();
-				
+
 		//Application des Parametres sur le Script
 		Child.GetComponent <T4MObjSC>().T4MMaterial = Tmaterial;
 		Child.GetComponent<T4MObjSC>().ConvertType= "UT";
-		
+
 		//Regalges Divers
 		vertexInfo = 0;
 		partofT4MObj = 0;
-		trisInfo = 0; 
+		trisInfo = 0;
 		int countchild = Child.transform.childCount;
 		if (countchild>0){
 			Renderer[] T4MOBJPART = Child.GetComponentsInChildren<Renderer>();
-			for (int i = 0; i < T4MOBJPART.Length; i++) 
+			for (int i = 0; i < T4MOBJPART.Length; i++)
 			{
 				if (!T4MOBJPART[i].gameObject.AddComponent<MeshCollider>())
 					T4MOBJPART[i].gameObject.AddComponent<MeshCollider>();
 				T4MOBJPART[i].gameObject.isStatic = true;
 				T4MOBJPART[i].material = Tmaterial;
-				T4MOBJPART[i].gameObject.layer = 30; 
+				T4MOBJPART[i].gameObject.layer = 30;
 				T4MOBJPART[i].gameObject.AddComponent<T4MPartSC>();
 				Child.GetComponent<T4MObjSC>().T4MMesh = T4MOBJPART[0].GetComponent<MeshFilter>();
 				partofT4MObj +=1;
@@ -3593,31 +3593,31 @@ public class T4MSC : EditorWindow {
 			Child.AddComponent<MeshCollider>();
 			Child.isStatic = true;
 			Child.GetComponent<Renderer>().material = Tmaterial;
-			Child.layer = 30; 
+			Child.layer = 30;
 			vertexInfo += Child.GetComponent<MeshFilter>().sharedMesh.vertexCount;
 			trisInfo += Child.GetComponent<MeshFilter>().sharedMesh.triangles.Length / 3;
 			partofT4MObj +=1;
 		}
-		
+
 		UpdateProgress();
-		
-		
+
+
 		GameObject BasePrefab2 = PrefabUtility.CreatePrefab(T4MPrefabFolder+"Terrains/"+FinalExpName+".prefab", Child);
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/"+FinalExpName+".prefab", ImportAssetOptions.ForceUpdate);
 		GameObject forRotate2 = (GameObject) PrefabUtility.InstantiatePrefab (BasePrefab2) as GameObject;
-		
+
 		DestroyImmediate (Child.gameObject);
-		
+
 		Child = forRotate2.gameObject;
-		
+
 		CurrentSelect.GetComponent<Terrain>().enabled = false;
-		
+
 		EditorUtility.SetSelectedWireframeHidden(Child.GetComponent<Renderer>(), true);
-		
+
 		UnityTerrain = CurrentSelect.gameObject;
-		
+
 		EditorUtility.ClearProgressBar();
-		
+
 		AssetDatabase.DeleteAsset(T4MPrefabFolder+"Terrains/Meshes/Materials");
 		terrainName="";
 		AssetDatabase.StartAssetEditing();
@@ -3635,42 +3635,42 @@ public class T4MSC : EditorWindow {
 		AssetDatabase.StopAssetEditing();
 		PrefabUtility.ResetToPrefabState (Child);
 	}
-	
-	
+
+
 	void Obj2T4M()
 	{
 		if (terrainName=="")
-			terrainName =CurrentSelect.name; 
-		
+			terrainName =CurrentSelect.name;
+
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/");
-		} 
+		}
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/Material/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/Material/");
-		} 
+		}
 		if (!System.IO.Directory.Exists(T4MPrefabFolder+"Terrains/Texture/"))
 		{
 			System.IO.Directory.CreateDirectory(T4MPrefabFolder+"Terrains/Texture/");
-		} 
-		AssetDatabase.Refresh(); 
-		
+		}
+		AssetDatabase.Refresh();
+
 		Texture2D NewMaskText = new Texture2D (512, 512,  TextureFormat.ARGB32, true);
 		Color[] ColorBase  = new Color[512 * 512];
 		for (var t = 0; t < ColorBase.Length; t++) {
 				ColorBase[t] = new Color (1, 0, 0, 0);
 		}
-		
+
 		NewMaskText.SetPixels (ColorBase);
-		
-		
+
+
 		bool ExportNameSuccess = false;
 		int num =1;
 		string Next;
-		do { 
+		do {
 			Next=terrainName+num;
-			
+
 			if (!System.IO.File.Exists(T4MPrefabFolder+"Terrains/Material/"+terrainName+".mat"))
 			{
 				FinalExpName = terrainName;
@@ -3683,8 +3683,8 @@ public class T4MSC : EditorWindow {
 			}
 			num++;
 		}while (!ExportNameSuccess);
-		
-		
+
+
 		var path = T4MPrefabFolder+"Terrains/Texture/"+ FinalExpName +".png";
 		var data = NewMaskText.EncodeToPNG ();
 		File.WriteAllBytes (path, data);
@@ -3701,46 +3701,46 @@ public class T4MSC : EditorWindow {
 		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat", ImportAssetOptions.ForceUpdate);
-		
-		
+
+
 		Texture FinalMaterial = (Texture)AssetDatabase.LoadAssetAtPath(path, typeof(Texture));
-		
-		
+
+
 		CurrentSelect.gameObject.AddComponent<T4MObjSC>();
-		
-		
+
+
 		int countchild = CurrentSelect.transform.childCount;
 		if (countchild>0){
 			Renderer[] T4MOBJPART = CurrentSelect.GetComponentsInChildren<Renderer>();
-			for (int i = 0; i < T4MOBJPART.Length; i++) 
+			for (int i = 0; i < T4MOBJPART.Length; i++)
 			{
 				if (T4MOBJPART[i].gameObject.GetComponent<Collider>())
 					DestroyImmediate(T4MOBJPART[i].gameObject.GetComponent<Collider>());
-					
+
 				T4MOBJPART[i].gameObject.AddComponent<MeshCollider>();
-				
+
 				T4MOBJPART[i].gameObject.isStatic = true;
-				
+
 				T4MOBJPART[i].material = Tmaterial;
-				T4MOBJPART[i].gameObject.layer = 30; 
+				T4MOBJPART[i].gameObject.layer = 30;
 				T4MOBJPART[i].gameObject.AddComponent<T4MPartSC>();
 				CurrentSelect.GetComponent<T4MObjSC>().T4MMesh = T4MOBJPART[0].GetComponent<MeshFilter>();
-				
+
 			}
 		}else {
 			if (CurrentSelect.GetComponent<Collider>())
 				DestroyImmediate(CurrentSelect.GetComponent<Collider>());
-			
+
 			CurrentSelect.gameObject.AddComponent<MeshCollider>();
 			CurrentSelect.gameObject.GetComponent<Renderer>().material = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = Tmaterial;
 			CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMesh = CurrentSelect.gameObject.GetComponent<MeshFilter>();
-			
+
 		}
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial = Tmaterial;
 		CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture ("_Control", FinalMaterial);
 		CurrentSelect.gameObject.isStatic = true;
 		CurrentSelect.gameObject.layer = 30;
-		
+
 		if (nbrT4MObj ==0){
 				CurrentSelect.gameObject.GetComponent <T4MObjSC>().EnabledLODSystem = ActivatedLOD;
 				CurrentSelect.gameObject.GetComponent <T4MObjSC>().enabledBillboard = ActivatedBillboard;
@@ -3751,15 +3751,15 @@ public class T4MSC : EditorWindow {
 				CurrentSelect.gameObject.GetComponent <T4MObjSC>().BackGroundView = BGDistMaxView;
 				CurrentSelect.gameObject.GetComponent <T4MObjSC>().Master = 1;
 		}
-		
-		
+
+
 		if (NewPref){
 			UnityEngine.Object BasePrefab = PrefabUtility.CreateEmptyPrefab(T4MPrefabFolder+"Terrains/"+FinalExpName+".prefab");
 			PrefabUtility.ReplacePrefab(CurrentSelect.gameObject, BasePrefab);
-			
+
 			GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath(T4MPrefabFolder+"Terrains/"+FinalExpName+".prefab", typeof(GameObject));
 			GameObject forRotate =(GameObject) PrefabUtility.InstantiatePrefab (prefab) as GameObject;
-			
+
 			DestroyImmediate(CurrentSelect.gameObject);
 			Selection.activeTransform = forRotate.transform;
 			EditorUtility.SetSelectedWireframeHidden(forRotate.GetComponent<Renderer>(), true);
@@ -3767,38 +3767,38 @@ public class T4MSC : EditorWindow {
 			Selection.activeTransform = CurrentSelect.transform;
 			EditorUtility.SetSelectedWireframeHidden(CurrentSelect.GetComponent<Renderer>(), true);
 		}
-		
+
 		CurrentSelect.gameObject.name = FinalExpName;
-		
+
 		EditorUtility.DisplayDialog("T4M Message", "Conversion Completed !", "OK");
-		
-		
-		
+
+
+
 		T4MMenuToolbar = 1;
 		terrainName="";
 		AssetDatabase.SaveAssets();
 	}
-	
-	
+
+
 	void GetHeightmap()
 	{
 		terrainDat = CurrentSelect.GetComponent <Terrain>().terrainData ;
-		HeightmapWidth = terrainDat.heightmapWidth;
-		HeightmapHeight = terrainDat.heightmapHeight;
+		HeightmapWidth = terrainDat.heightmapResolution;
+		HeightmapHeight = terrainDat.heightmapResolution;
 	}
-	
-	 void UpdateProgress () 
+
+	 void UpdateProgress ()
 	 {
         if (counter++ == progressUpdateInterval) {
             counter = 0;
             EditorUtility.DisplayProgressBar("Generate...", "", Mathf.InverseLerp(0, totalCount, ++tCount));
         }
     }
-	
+
 	void IniNewSelect()
 	{
-		
-			
+
+
 		if (UnityTerrain){
 			DestroyImmediate(UnityTerrain);
 			if(Child){
@@ -3821,7 +3821,7 @@ public class T4MSC : EditorWindow {
 		if (CurrentSelect && CurrentSelect.GetComponent <T4MObjSC>()  && CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial){
 				EditorUtility.SetSelectedWireframeHidden(CurrentSelect.GetComponent<Renderer>(), true);
 				initMaster = false;
-			
+
 				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Splat0")){
 					Layer1 =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat0");
 					Layer1Tile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTextureScale("_Splat0");
@@ -3846,7 +3846,7 @@ public class T4MSC : EditorWindow {
 					Layer6 =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat5");
 					Layer6Tile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTextureScale("_Splat5");
 				}else Layer6 =null;
-				
+
 				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_BumpSplat0")){
 					Layer1Bump =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_BumpSplat0");
 					Layer2Bump =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_BumpSplat1");
@@ -3854,8 +3854,8 @@ public class T4MSC : EditorWindow {
 						Layer3Bump =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_BumpSplat2");
 					if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_BumpSplat3"))
 						Layer4Bump =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_BumpSplat3");
-					
-				} 
+
+				}
 					if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 						LMMan = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Lightmap");
 					}
@@ -3877,46 +3877,46 @@ public class T4MSC : EditorWindow {
 					if (CurrentSelect.GetComponent <T4MObjSC>().Mode == 1)
 						LODModeControler = LODMod.Mass_Control;
 					else LODModeControler = LODMod.Independent_Control;
-			
+
 					if(CurrentSelect.GetComponent <T4MObjSC>().Axis == 0)
 						BillBoardAxis = BillbAxe.Y_Axis;
 					else BillBoardAxis = BillbAxe.All_Axis;
-			
+
 					if(CurrentSelect.GetComponent <T4MObjSC>().LODbasedOnScript == true)
 						LODocclusion = OccludeBy.Max_View_Distance;
 					else LODocclusion = OccludeBy.Layer_Cull_Distances;
-			 
-			
+
+
 					if(CurrentSelect.GetComponent <T4MObjSC>().BilBbasedOnScript == true)
 						BilBocclusion = OccludeBy.Max_View_Distance;
 					else BilBocclusion = OccludeBy.Layer_Cull_Distances;
-					
-					
+
+
 					if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition != null && CurrentSelect.gameObject.GetComponent <T4MObjSC>().BillboardPosition.Length>0)
 						billActivate = true;
 					else billActivate = false;
-					
+
 					if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjPosition != null && CurrentSelect.gameObject.GetComponent <T4MObjSC>().ObjPosition.Length>0)
 						LodActivate = true;
 					else LodActivate = false;
-			
-			
+
+
 					if (PlayerCam == null && Camera.main)
 						PlayerCam = Camera.main.transform;
 					else if (PlayerCam == null && !Camera.main){
 						Camera[] Cam =  GameObject.FindObjectsOfType(typeof(Camera)) as Camera[];
 						for (var b =0; b <Cam.Length;b++){
 							if (Cam[b].GetComponent<AudioListener>()){
-								PlayerCam = Cam[b].transform; 
+								PlayerCam = Cam[b].transform;
 							}
 						}
 					}
-			
-			
+
+
 				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_SpecColor")){
-					
+
 					ShinessColor = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetColor("_SpecColor");
-					
+
 					if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_ShininessL0")){
 						shiness0 = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_ShininessL0");
 					}
@@ -3938,10 +3938,10 @@ public class T4MSC : EditorWindow {
 					T4MMaskTexUVCoord = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTextureScale("_Control").x;
 					T4MMaskTex = (Texture2D)CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Control");
 					intialized=true;
-					
+
 				}
-			
-				
+
+
 			}
 			Projector[] projectorObj = FindObjectsOfType(typeof(Projector)) as Projector[];
 			if(projectorObj.Length>0)
@@ -3955,13 +3955,13 @@ public class T4MSC : EditorWindow {
 			trisInfo= 0;
 			partofT4MObj = 0;
 			TexTexture = null;
-			
+
 		T4MSelectID = Selection.activeInstanceID;
-		
+
 	}
-	
+
 	void CheckShader(){
-		
+
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall ;
 			ShaderModel = SM.ShaderModel1;
@@ -3969,11 +3969,11 @@ public class T4MSC : EditorWindow {
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_ManualAdd_BeastLM_1DC ;
 			ShaderModel = SM.ShaderModel1;
-		}else	
+		}else
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_ManualAdd_CustoLM_1DC ;
 			ShaderModel = SM.ShaderModel1;
-		}else	
+		}else
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
@@ -4004,7 +4004,7 @@ public class T4MSC : EditorWindow {
 			UpSideTile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetVector ("_Tiling");
 			UpSideF = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_UpSide");
 			BlendFac= CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_Blend");
-			
+
 		}else
 		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_HighSpec;
@@ -4188,10 +4188,10 @@ public class T4MSC : EditorWindow {
 				UpSideTile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetVector ("_Tiling");
 				UpSideF = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_UpSide");
 				BlendFac= CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_Blend");
-				
+
 			}
-		}		
-					
+		}
+
 	}
 
 }
