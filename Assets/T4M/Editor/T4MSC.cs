@@ -376,7 +376,6 @@ public class T4MSC : EditorWindow {
 					GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/T4MBAN.jpg", typeof(Texture2D)) as Texture2D,GUILayout.Width(24),GUILayout.Height (582));
 				GUILayout.EndArea ();
 		GUILayout.BeginArea (new Rect (25,0,363,50));
-		GUILayout.Label("T4M SC 久久没有更新，在Unity5各种问题。故修改此版，供公司美术使用，\n版权归原作者所有！此改版问题请反馈老沙：287490904@qq.com");
 		GUILayout.Label(AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/logo.png", typeof(Texture))as Texture);
 		GUILayout.EndArea ();
 
