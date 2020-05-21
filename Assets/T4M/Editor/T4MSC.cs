@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using Substance.Game;
 
-public class T4MSC : EditorWindow {
+public partial class T4MSC : EditorWindow {
 
 	static public Transform CurrentSelect ;
 	public enum SM{
@@ -709,7 +709,7 @@ public class T4MSC : EditorWindow {
 				else LOD1Material= (Material)EditorGUILayout.ObjectField(LOD1Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD1S)
-					LOD1Material =  new Material (Shader.Find (LOD1S.name));
+					LOD1Material =  new Material (T4MShaderUtil.Find (LOD1S.name));
 
 					if (LOD1Material && LOD1Material.HasProperty("_MainTex")){
 						if (LOD1Material.GetTexture("_MainTex"))
@@ -1353,9 +1353,9 @@ public class T4MSC : EditorWindow {
 					}
 					else if (T4MselTexture == 1){
 						T4MPreview.material.SetTexture("_MainTex", CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Splat1") as Texture);
-						if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall") ||
-								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")||
-								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC"))
+						if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find ("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall") ||
+								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")||
+								CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find ("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC"))
 							T4MtargetColor = new Color(0, 0, 0, 1);
 						else {
 						T4MtargetColor = new Color(0, 1, 0, 0);
@@ -1430,7 +1430,7 @@ public class T4MSC : EditorWindow {
 		T4MPreview.ignoreLayers =  ~layerMask;
         T4MPreview.transform.Rotate(90, -90, 0);
 		//Material NewPMat = new Material ("Shader \"Hidden/PreviewT4M\" { \nProperties {\n	_Transp (\"Transparency\", Range(0,1)) = 1 \n	_MainTex (\"Texture\", 2D) = \"\" { }\n	_MaskTex (\"Mask (RGB) Trans (A)\", 2D) = \"\" { }\n	}\nSubShader {\n		Pass {\n		Blend SrcAlpha OneMinusSrcAlpha \n  CGPROGRAM\n       #pragma vertex vert\n       #pragma fragment frag\n       #include \"UnityCG.cginc\"\n  struct v2f {\n   float4 pos : SV_POSITION;\n    float4 uv1 : TEXCOORD0;\n   float4 uv2 : TEXCOORD1;\n    float4 uv3 : TEXCOORD2;\n       };\n		float4x4 _Projector;\n		float4x4 _ProjectorClip;\n		float _Transp;\n       sampler2D _MaskTex;\n       sampler2D _MainTex;\n      // v2f vert (float4 v : POSITION)\n      v2f vert(appdata_full v)\n       {\n   v2f o;\n   o.pos = mul(UNITY_MATRIX_MVP, v.vertex);\n\n   // TexGen ObjectLinear:\n   // use object space vertex position\n   o.uv1 = v.vertex.xyzw;\n   o.uv2 = mul(_Projector,v.vertex);\n   o.uv3 = mul(_ProjectorClip,v.vertex);\n   return o;\n       }\n       \n       half4 frag (v2f i) : SV_Target\n       {\n half4 col =tex2Dproj(_MainTex, UNITY_PROJ_COORD(i.uv2));\n half4 mask =tex2Dproj (_MaskTex,UNITY_PROJ_COORD(i.uv2));\n half4 res = col*mask.a;\n res *= (half)_Transp;\n   return res;\n  }\n ENDCG \n } \n	}\n}\n");
-		Material NewPMat = new Material(Shader.Find("T4M/PreviewT4M")); //("Shader \"Hidden/PreviewT4M\" { \n	Properties {\n _Transp (\"Transparency\", Range(0,1)) = 1 \n  _MainTex (\"Texture\", 2D) = \"\" { }\n	_MaskTex (\"Mask (RGB) Trans (A)\", 2D) = \"\" { TexGen ObjectLinear }\n	}\nSubShader {\n Pass {\nBlend SrcAlpha OneMinusSrcAlpha  \n SetTexture [_MainTex]  \n SetTexture [_MaskTex] {\n constantColor (1,1,1,[_Transp]) \n	combine previous , texture* constant\n	Matrix [_Projector]\n	}\n}\n}\n}");
+		Material NewPMat = new Material(T4MShaderUtil.Find("T4M/PreviewT4M")); //("Shader \"Hidden/PreviewT4M\" { \n	Properties {\n _Transp (\"Transparency\", Range(0,1)) = 1 \n  _MainTex (\"Texture\", 2D) = \"\" { }\n	_MaskTex (\"Mask (RGB) Trans (A)\", 2D) = \"\" { TexGen ObjectLinear }\n	}\nSubShader {\n Pass {\nBlend SrcAlpha OneMinusSrcAlpha  \n SetTexture [_MainTex]  \n SetTexture [_MaskTex] {\n constantColor (1,1,1,[_Transp]) \n	combine previous , texture* constant\n	Matrix [_Projector]\n	}\n}\n}\n}");
 		T4MPreview.material = NewPMat;
 		T4MPreview.material.SetTexture("_MainTex", TexTexture[T4MselTexture]);
 		T4MPreview.material.SetTexture("_MaskTex", TexBrush[selBrush]);
@@ -1603,7 +1603,7 @@ public class T4MSC : EditorWindow {
 				else LOD1Material= (Material)EditorGUILayout.ObjectField(LOD1Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD1S)
-					LOD1Material =  new Material (Shader.Find (LOD1S.name));
+					LOD1Material =  new Material (T4MShaderUtil.Find (LOD1S.name));
 
 					if (LOD1Material && LOD1Material.HasProperty("_MainTex")){
 						if (LOD1Material.GetTexture("_MainTex"))
@@ -1643,7 +1643,7 @@ public class T4MSC : EditorWindow {
 			else LOD2Material= (Material)EditorGUILayout.ObjectField(LOD2Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD2S)
-					LOD2Material =  new Material (Shader.Find (LOD2S.name));
+					LOD2Material =  new Material (T4MShaderUtil.Find (LOD2S.name));
 					if (LOD2Material && LOD2Material.HasProperty("_MainTex")){
 						if (LOD2Material.GetTexture("_MainTex"))
 							LOD2T = LOD2Material.GetTexture("_MainTex");
@@ -1682,7 +1682,7 @@ public class T4MSC : EditorWindow {
 			else LOD3Material= (Material)EditorGUILayout.ObjectField(LOD3Material, typeof(Material),false, GUILayout.MaxWidth(220));
 			GUILayout.EndVertical();
 				if (LOD3S)
-					LOD3Material =  new Material (Shader.Find (LOD3S.name));
+					LOD3Material =  new Material (T4MShaderUtil.Find (LOD3S.name));
 					if (LOD3Material && LOD3Material.HasProperty("_MainTex")){
 						if (LOD3Material.GetTexture("_MainTex"))
 							LOD3T = LOD3Material.GetTexture("_MainTex");
@@ -2364,9 +2364,9 @@ public class T4MSC : EditorWindow {
 			switch (MyT4MV)
 			{
 				case 0:
-				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM") &&
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader") &&
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile") && !CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Tiling")){
+				if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM") &&
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader") &&
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader != T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile") && !CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.HasProperty("_Tiling")){
 						PixelPainterMenu();
 				}else ProjectionWorldConfig();
 				break;
@@ -2648,7 +2648,7 @@ public class T4MSC : EditorWindow {
 				}
 			}
 
-			if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
+			if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 				GUILayout.Label("Manual Lightmap Add" , EditorStyles.boldLabel);
 				GUILayout.BeginHorizontal("Box");
 				GUILayout.Label((Texture)AssetDatabase.LoadAssetAtPath(T4MEditorFolder+"Img/TLM.jpg", typeof(Texture)));
@@ -3056,166 +3056,166 @@ public class T4MSC : EditorWindow {
 		if (ShaderModel == SM.ShaderModel1){
 			//Diffuse SM1
 			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall");
 			}
 			else
 			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_BeastLM_1DC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC");
 			}
 			else
 			if (MenuTextureSM1 == EnumShaderGLES1.T4M_2_Textures_ManualAdd_CustoLM_1DC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC");
 			}
 		}else if (ShaderModel == SM.ShaderModel2){
 				//Unlit SM2
 				if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 3 Textures Unlit LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 3 Textures Unlit LM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 5 Textures Unlit LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 5 Textures Unlit LM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit LM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_Unlit_No_Lightmap){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit NoLM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit NoLM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Unlit_Lightmap_Compatible){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM");
 				}
 
 				//Diffuse SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_5_Textures_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 5 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 5 Textures");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_6_Textures_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_HighSpec){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader");
 				}
 
 				//Specular SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 2 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 2 Textures Spec");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec");
 				}
 
 
 				//4 mobile lightmap SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_4_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 2 Textures for Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 2 Textures for Mobile");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_4_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_4_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 4 Textures for Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 4 Textures for Mobile");
 				}//else if (MenuTextureSM2 == EnumShaderGLES2.T4M_World_Projection_Mobile){
-				//	CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile");
+				//	CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile");
 				//}
 
 				//Toon SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Toon){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 2 Textures Toon");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 2 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Toon){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 3 Textures Toon");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 3 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Toon){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 4 Textures Toon");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 4 Textures Toon");
 					Cubemap ToonShade =(Cubemap) AssetDatabase.LoadAssetAtPath(T4MFolder+"Shaders/Sources/toony lighting.psd",typeof (Cubemap));
 					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.SetTexture("_ToonShade",ToonShade );
 				}
 
 				//Bumped SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped");
 				}/*else if (MenuTextureSM2 == EnumShaderGLES2.T4M_4_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 4 Textures Bumped");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 4 Textures Bumped");
 				}*/
 
 				//Mobile Bumped
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped Mobile");
 				}
 
 				//Mobile Bumped Spec
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular Mobile");
 				}
 
 				//Mobile Bump LM
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM_Mobile){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile");
 				}
 
 
 
 				//Bump Spec SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_SPEC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bump Specular");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bump Specular");
 				}
 				//Bump LM SM2
 				else if (MenuTextureSM2 == EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM");
 				}else if (MenuTextureSM2 == EnumShaderGLES2.T4M_3_Textures_Bumped_DirectionalLM){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 3 Textures Bumped DLM");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 3 Textures Bumped DLM");
 				}
 
 		}
 		else if (ShaderModel == SM.ShaderModel3){
 				//Diffuse SM3
 				if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Diffuse){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 2 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 2 Textures");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Diffuse){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Diffuse){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_5_Textures_Diffuse){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 5 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 5 Textures");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_6_Textures_Diffuse){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 6 Textures");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 6 Textures");
 				}
 
 				//Specular
 				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 2 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 2 Textures Spec");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Specular){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec");
 				}
 
 				//Bumped SM3
 				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 3 Textures Bump");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 3 Textures Bump");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 4 Textures Bump");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 4 Textures Bump");
 				}
 
 				//Bump Spec SM3
 				else if (MenuTextureSM3 == EnumShaderGLES3.T4M_2_Textures_Bumped_SPEC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_3_Textures_Bumped_SPEC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec");
 				}else if (MenuTextureSM3 == EnumShaderGLES3.T4M_4_Textures_Bumped_SPEC){
-					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec");
+					CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader =  T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec");
 				}
 
 		}else{
@@ -3512,7 +3512,7 @@ public class T4MSC : EditorWindow {
 
 		//Creation du Materiel
 		Material Tmaterial;
-		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
+		Tmaterial = new Material (T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat", ImportAssetOptions.ForceUpdate);
 		AssetDatabase.Refresh();
@@ -3697,7 +3697,7 @@ public class T4MSC : EditorWindow {
 		TextureIm.textureCompression = TextureImporterCompression.Uncompressed;
 		AssetDatabase.ImportAsset (path, ImportAssetOptions.ForceUpdate);
 		Material Tmaterial;
-		Tmaterial = new Material (Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
+		Tmaterial = new Material (T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures"));
 		AssetDatabase.CreateAsset(Tmaterial, T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat");
 		AssetDatabase.ImportAsset (T4MPrefabFolder+"Terrains/Material/"+FinalExpName+".mat", ImportAssetOptions.ForceUpdate);
 
@@ -3855,7 +3855,7 @@ public class T4MSC : EditorWindow {
 						Layer4Bump =CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_BumpSplat3");
 
 				}
-					if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
+					if(CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC") || CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 						LMMan = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetTexture("_Lightmap");
 					}
 					CheckShader();
@@ -3961,43 +3961,43 @@ public class T4MSC : EditorWindow {
 
 	void CheckShader(){
 
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures Auto BeastLM 2DrawCall")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_Auto_BeastLM_2DrawCall ;
 			ShaderModel = SM.ShaderModel1;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd BeastLM_1DC")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_ManualAdd_BeastLM_1DC ;
 			ShaderModel = SM.ShaderModel1;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel1/T4M 2 Textures ManualAdd CustoLM 1DC")){
 			MenuTextureSM1 = EnumShaderGLES1.T4M_2_Textures_ManualAdd_CustoLM_1DC ;
 			ShaderModel = SM.ShaderModel1;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 2 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 3 Textures Unlit LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 3 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 4 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 5 Textures Unlit LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 5 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_5_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_6_Textures_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit NoL")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M 6 Textures Unlit NoL")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_6_Textures_Unlit_No_Lightmap;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Unlit/T4M World Projection Shader + LM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_World_Projection_Unlit_Lightmap_Compatible;
 			ShaderModel = SM.ShaderModel2;
 			UpSideTile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetVector ("_Tiling");
@@ -4005,58 +4005,58 @@ public class T4MSC : EditorWindow {
 			BlendFac= CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_Blend");
 
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 2 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 3 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 4 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 5 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 5 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_5_Textures_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M 6 Textures")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_6_Textures_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Diffuse/T4M World Projection Shader")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_World_Projection_HighSpec;
 			ShaderModel = SM.ShaderModel2;
 			UpSideTile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetVector ("_Tiling");
 			UpSideF = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_UpSide");
 			BlendFac= CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_Blend");
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 2 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 2 Textures Spec")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Specular;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 3 Textures Spec")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Specular;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Specular/T4M 4 Textures Spec")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_Specular;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 2 Textures for Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 2 Textures for Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_4_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 3 Textures for Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_4_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M 4 Textures for Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M 4 Textures for Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_4_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}//else
-		//if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile")){
+		//if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/MobileLM/T4M World Projection Shader_Mobile")){
 		//	MenuTextureSM2 = EnumShaderGLES2.T4M_World_Projection_Mobile;
 		//	ShaderModel = SM.ShaderModel2;
 		//	UpSideTile = CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetVector ("_Tiling");
@@ -4064,120 +4064,120 @@ public class T4MSC : EditorWindow {
 		//	BlendFac= CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.GetFloat ("_Blend");
 		//}
 		else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 2 Textures Toon")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 2 Textures Toon")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Toon;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 3 Textures Toon")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 3 Textures Toon")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Toon;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Toon/T4M 4 Textures Toon")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Toon/T4M 4 Textures Toon")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_Toon;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Bumped;
 			ShaderModel = SM.ShaderModel2;
 		}/*else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 4 Textures Bumped")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 4 Textures Bumped")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_4_Textures_Bumped;
 			ShaderModel = SM.ShaderModel2;
 		}*/else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bumped Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bumped Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Bumped_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM Mobile")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM_Mobile;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 2 Textures Bump Specular")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped_SPEC;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bump Specular")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/Bump/T4M 3 Textures Bump Specular")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Bumped_SPEC;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 2 Textures Bumped DLM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_2_Textures_Bumped_DirectionalLM;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 3 Textures Bumped DLM")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel2/BumpDLM/T4M 3 Textures Bumped DLM")){
 			MenuTextureSM2 = EnumShaderGLES2.T4M_3_Textures_Bumped_DirectionalLM;
 			ShaderModel = SM.ShaderModel2;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 2 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 2 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_2_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_3_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 3 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_3_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 4 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 5 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 5 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_5_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Diffuse/T4M 6 Textures")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Diffuse/T4M 6 Textures")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_6_Textures_Diffuse;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 2 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 2 Textures Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_2_Textures_Specular;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 3 Textures Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_3_Textures_Specular;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Specular/T4M 4 Textures Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Specular;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 2 Textures Bump")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_2_Textures_Bumped;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 3 Textures Bump")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 3 Textures Bump")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_3_Textures_Bumped;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/Bump/T4M 4 Textures Bump")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/Bump/T4M 4 Textures Bump")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Bumped;
 			ShaderModel = SM.ShaderModel3;
 		}
 		else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 2 Textures Bump Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_2_Textures_Bumped_SPEC;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 3 Textures Bump Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_3_Textures_Bumped_SPEC;
 			ShaderModel = SM.ShaderModel3;
 		}else
-		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == Shader.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec")){
+		if (CurrentSelect.gameObject.GetComponent <T4MObjSC>().T4MMaterial.shader == T4MShaderUtil.Find("T4MShaders/ShaderModel3/BumpSpec/T4M 4 Textures Bump Spec")){
 			MenuTextureSM3 = EnumShaderGLES3.T4M_4_Textures_Bumped_SPEC;
 			ShaderModel = SM.ShaderModel3;
 		}else{
