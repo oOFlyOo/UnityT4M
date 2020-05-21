@@ -7,16 +7,16 @@
 		float2 uv0: TEXCOORD0;
 	};
 
-	T4M_Meta_Varyings UniversalVertexMeta(Attributes input)
+	T4M_Varyings UniversalVertexMeta(Attributes input)
 	{
-		T4M_Meta_Varyings output;
+		T4M_Varyings output = (T4M_Varyings)0;
 		output.positionCS = TransformWorldToHClip(input.positionOS);
 		// output.uv = TRANSFORM_TEX(input.uv0, _BaseMap);
         InitializeOutputUV(input.uv0, output);
 		return output;
 	}
 
-	half4 UniversalFragmentMetaSimple(T4M_Meta_Varyings input): SV_Target
+	half4 UniversalFragmentMetaSimple(T4M_Varyings input): SV_Target
 	{
 		// float2 uv = input.uv;
 		// return half4(SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv).rgb, 1);

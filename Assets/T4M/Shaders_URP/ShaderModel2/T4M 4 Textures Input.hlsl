@@ -47,31 +47,8 @@
 		UNITY_VERTEX_OUTPUT_STEREO
 	};
 
-    struct T4M_Meta_Varyings
-	{
-		float4 positionCS: SV_POSITION;
-
-		T4M_DECLARE_UV(uv_Control, 0);
-		T4M_DECLARE_UV(uv_Splat0, 1);
-		T4M_DECLARE_UV(uv_Splat1, 2);
-		T4M_DECLARE_UV(uv_Splat2, 3);
-		T4M_DECLARE_UV(uv_Splat3, 4);
-
-		UNITY_VERTEX_INPUT_INSTANCE_ID
-		UNITY_VERTEX_OUTPUT_STEREO
-	};
-
 
 	void InitializeOutputUV(float2 texcoord, inout T4M_Varyings output)
-	{
-		T4M_TRANSFORM_TEX(texcoord, output, _Control);
-		T4M_TRANSFORM_TEX(texcoord, output, _Splat0);
-		T4M_TRANSFORM_TEX(texcoord, output, _Splat1);
-		T4M_TRANSFORM_TEX(texcoord, output, _Splat2);
-		T4M_TRANSFORM_TEX(texcoord, output, _Splat3);
-	}
-
-    void InitializeOutputUV(float2 texcoord, inout T4M_Meta_Varyings output)
 	{
 		T4M_TRANSFORM_TEX(texcoord, output, _Control);
 		T4M_TRANSFORM_TEX(texcoord, output, _Splat0);
@@ -94,17 +71,4 @@
 		return half4(rgb, 0);
 	}
 
-    half4 surf(T4M_Meta_Varyings IN)
-	{
-		fixed4 splat_control = T4M_SAMPLE_TEXTURE2D(_Control, IN.uv_Control).rgba;
-
-		fixed3 lay1 = T4M_SAMPLE_TEXTURE2D(_Splat0, IN.uv_Splat0);
-		fixed3 lay2 = T4M_SAMPLE_TEXTURE2D(_Splat1, IN.uv_Splat1);
-		fixed3 lay3 = T4M_SAMPLE_TEXTURE2D(_Splat2, IN.uv_Splat2);
-		fixed3 lay4 = T4M_SAMPLE_TEXTURE2D(_Splat3, IN.uv_Control * _Tiling3.xy);
-
-		half3 rgb = (lay1 * splat_control.r + lay2 * splat_control.g + lay3 * splat_control.b + lay4 * splat_control.a);
-
-		return half4(rgb, 0);
-	}
 #endif
